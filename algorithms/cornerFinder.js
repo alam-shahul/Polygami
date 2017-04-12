@@ -1,5 +1,9 @@
 function len(x) {return x.length;}
 
+// computeCorners takes an N * M matrix of 0s and 1s, where 1s represent extruded 1x1x1 cubes
+// on the surface of the paper.
+// It creates an ordering of the extruded cubes, puts them on a sufficiently large piece of paper
+// and
 function computeCorners(pixelMatrix) {
     var N = len(pixelMatrix);
     var M = len(pixelMatrix[0]);
@@ -21,10 +25,12 @@ function computeCorners(pixelMatrix) {
             }
         }
     }
-    console.log(numberOfOnes);
 
-    console.log(rowPadding);
-    console.log(columnPadding);
+    // Debug statements
+    // console.log(numberOfOnes);
+    //
+    // console.log(rowPadding);
+    // console.log(columnPadding);
 
     var cumulativeRowPadding = [];
     var cumulativeColumnPadding = [];
@@ -37,9 +43,8 @@ function computeCorners(pixelMatrix) {
     while(cumulativeColumnPadding.push(cumulativeColumnPadding[cumulativeColumnPadding.length - 1]
         + columnPadding[cumulativeColumnPadding.length - 1] + columnPadding[cumulativeColumnPadding.length]) < M);
 
-    console.log(cumulativeRowPadding);
-    console.log(cumulativeColumnPadding);
-
+    // console.log(cumulativeRowPadding);
+    // console.log(cumulativeColumnPadding);
 
     var order = 1;
 
@@ -53,7 +58,7 @@ function computeCorners(pixelMatrix) {
             }
         }
     }
-    console.log(orderMatrix);
+    // console.log(orderMatrix);
 
     var oldN = N;
     N = N + 2 * numberOfOnes;
@@ -69,14 +74,27 @@ function computeCorners(pixelMatrix) {
         }
     }
 
+    var columnSum = [];
+    while(columnSum.push(0) < M);
     for(var i = 0; i < oldN; i++) {
+        var rowSum = 0;
         for(var j = 0; j < oldM; j++) {
+            if(pixelMatrix[i][j] != 0) {
+                rowSum += 1;
+                columnSum[j] += 1;
+            }
             corners[i + cumulativeRowPadding[i]][j + cumulativeColumnPadding[j]] = orderMatrix[i][j];
+
+            corners[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
+            corners[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
+            corners[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
+            corners[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
         }
     }
 
     console.log(corners);
 
+    return corners;
     // Strategy - figure out how much padding each column and each row requires.
 }
 
