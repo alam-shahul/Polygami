@@ -6,4 +6,19 @@ class Point {
     this.x = x;
     this.y = y;
   }
+
+  // Returns x and y as the string x,y
+  static toString(x, y) {
+    return x.toString() + ',' + y.toString();
+  }
+
+  equals(obj) {
+    if (typeof obj !== typeof this) {
+      return false;
+    }
+    if (this.x === obj.x && this.y === obj.y) {
+      return true;
+    }
+    return false;
+  }
 }

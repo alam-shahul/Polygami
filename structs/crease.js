@@ -8,4 +8,15 @@ class Crease {
     // color represents the crease direction
     this.color = color;
   }
+
+  equals(obj) {
+    if (typeof obj !== typeof this) {
+      return false;
+    }
+    // The Crease equality operator does NOT consider color
+    if (this.start.equals(obj.start) && this.end.equals(obj.end)) {
+      return true;
+    }
+    return false;
+  }
 }
