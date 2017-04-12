@@ -75,7 +75,11 @@ function computeCorners(pixelMatrix) {
     }
 
     var columnSum = [];
+    // fill it with 0s
     while(columnSum.push(0) < M);
+
+    // var grid = new Grid(N, M);
+
     for(var i = 0; i < oldN; i++) {
         var rowSum = 0;
         for(var j = 0; j < oldM; j++) {
@@ -85,10 +89,18 @@ function computeCorners(pixelMatrix) {
             }
             corners[i + cumulativeRowPadding[i]][j + cumulativeColumnPadding[j]] = orderMatrix[i][j];
 
-            corners[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
-            corners[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
-            corners[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
+            // top left
             corners[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
+
+            // top right
+            corners[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
+
+            // bottom left
+            corners[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
+
+            // bottom right
+            corners[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
+
         }
     }
 
