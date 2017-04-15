@@ -12,8 +12,8 @@ class Grid {
     // There is a Point every 0.5 of a grid unit
     // Points are keyed by stringified coordinates x,y
     this.points = {};
-    for (x = 0; x <= w; x += 0.5) {
-      for (y = 0; y <= h; y += 0.5) {
+    for (var x = 0; x <= w; x += 0.5) {
+      for (var y = 0; y <= h; y += 0.5) {
         this.points[Point.toString(x, y)] = new Point(x, y);
       }
     }
@@ -26,11 +26,6 @@ class Grid {
         this.creases[point] = [];
       }
     }
-  }
-
-  // Returns the Tile at an (x, y) location in this grid
-  tile(x, y) {
-    return this.tiles[x][y];
   }
 
   // Returns the Point at an (x, y) location in this grid
