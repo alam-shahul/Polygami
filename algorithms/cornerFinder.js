@@ -109,7 +109,7 @@ function computeCorners(pixelMatrix) {
                 // bottom right
                 corner[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
                 grid.corners[Point.toString(i + cumulativeRowPadding[i] + rowSum, j + cumulativeColumnPadding[j] - columnSum[j])]
-                    = new Corner(orderMatrix[i][j], new Point(i + cumulativeRowPadding[i] + rowSum + 1, j + cumulativeColumnPadding[j] - columnSum[j]));
+                    = new Corner(orderMatrix[i][j], new Point(i + cumulativeRowPadding[i] + rowSum, j + cumulativeColumnPadding[j] - columnSum[j] + 1));
             }
         }
     }
