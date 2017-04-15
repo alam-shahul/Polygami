@@ -65,20 +65,18 @@ function computeCorners(pixelMatrix) {
     var oldM = M;
     M = M + 2 * numberOfOnes;
 
-    var corners = [];
+    var corn = [];
 
     for(var i = 0; i < N; i++) {
-        corners.push([]);
+        corn.push([]);
         for(var j = 0; j < M; j++) {
-            corners[i].push(0);
+            corn[i].push(0);
         }
     }
 
     var columnSum = [];
     // fill it with 0s
     while(columnSum.push(0) < M);
-
-    // var grid = new Grid(N, M);
 
     for(var i = 0; i < oldN; i++) {
         var rowSum = 0;
@@ -87,26 +85,31 @@ function computeCorners(pixelMatrix) {
                 rowSum += 1;
                 columnSum[j] += 1;
             }
-            corners[i + cumulativeRowPadding[i]][j + cumulativeColumnPadding[j]] = orderMatrix[i][j];
+            corn[i + cumulativeRowPadding[i]][j + cumulativeColumnPadding[j]] = orderMatrix[i][j];
 
             // top left
-            corners[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
+            corn[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
 
             // top right
-            corners[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
+            corn[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
 
             // bottom left
-            corners[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
+            corn[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
 
             // bottom right
-            corners[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
+            corn[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
 
         }
     }
 
-    console.log(corners);
+    console.log(corn);
 
-    return corners;
+    var grid = new Grid(len(corn[0]), len(corn));
+
+    // Uses corn array to add corners to grid.
+    // Should add try/catch statement here.
+
+    return corn;
     // Strategy - figure out how much padding each column and each row requires.
 }
 

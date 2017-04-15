@@ -5,15 +5,8 @@ class Grid {
     this.w = w;
     this.h = h;
 
-    // Instantiate a 2D array holding all the Tiles in the Grid
-    this.tiles = [];
-    var x, y;
-    for (x = 0; x < w; x++) {
-      this.tiles[x] = [];
-      for (y = 0; y < h; y++) {
-        this.tiles[x].push(new Tile(x, y));
-      }
-    }
+    // Instantiate an empty array that will hold the Corners that will be placed in the grid
+    this.corners = [];
 
     // Instantiate an object holding all the Points in the Grid
     // There is a Point every 0.5 of a grid unit
@@ -84,23 +77,5 @@ class Grid {
       this.creases[Point.toString(end.x, end.y)].push(crease);
       return crease;
     }
-  }
-}
-
-class Tile {
-  constructor(x, y) {
-    // x and y are the coordinates of the bottom left corner of the Tile
-    this.x = x;
-    this.y = y;
-  }
-
-  // Adds corner to this tile (overrides any previous corners)
-  setCorner(corner) {
-    this.corner = corner;
-  }
-
-  // Returns whether there is a corner at this tile
-  hasCorner() {
-    return this.hasOwnProperty('corner');
   }
 }
