@@ -116,12 +116,10 @@ function computeCorners(pixelMatrix) {
 
     console.log(corner);
 
-
     // Uses corner array to add cornerers to grid.
     // Should add try/catch statement here.
 
     return grid;
-    // Strategy - figure out how much padding each column and each row requires.
 }
 
 computeCorners([[1, 0, 1],[0, 1, 0]]);
