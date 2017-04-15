@@ -6,7 +6,7 @@ class Grid {
     this.h = h;
 
     // Instantiate an empty array that will hold the Corners that will be placed in the grid
-    this.corners = [];
+    this.corners = {};
 
     // Instantiate an object holding all the Points in the Grid
     // There is a Point every 0.5 of a grid unit

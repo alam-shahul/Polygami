@@ -65,14 +65,16 @@ function computeCorners(pixelMatrix) {
     var oldM = M;
     M = M + 2 * numberOfOnes;
 
-    var corn = [];
+    var corner = [];
 
     for(var i = 0; i < N; i++) {
-        corn.push([]);
+        corner.push([]);
         for(var j = 0; j < M; j++) {
-            corn[i].push(0);
+            corner[i].push(0);
         }
     }
+
+    var grid = new Grid(len(corner[0]), len(corner));
 
     var columnSum = [];
     // fill it with 0s
@@ -85,31 +87,40 @@ function computeCorners(pixelMatrix) {
                 rowSum += 1;
                 columnSum[j] += 1;
             }
-            corn[i + cumulativeRowPadding[i]][j + cumulativeColumnPadding[j]] = orderMatrix[i][j];
+            corner[i + cumulativeRowPadding[i]][j + cumulativeColumnPadding[j]] = orderMatrix[i][j];
 
-            // top left
-            corn[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
+            if(orderMatrix[i][j] !== 0) {
+                // bottom left
+                corner[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
+                grid.corners[Point.toString(i + cumulativeRowPadding[i] - rowSum, j + cumulativeColumnPadding[j] - columnSum[j])]
+                    = new Corner(orderMatrix[i][j], new Point(i + cumulativeRowPadding[i] - rowSum + 1, j + cumulativeColumnPadding[j] - columnSum[j] + 1));
 
-            // top right
-            corn[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
+                // top left
+                corner[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
+                grid.corners[Point.toString(i + cumulativeRowPadding[i] - rowSum, j + cumulativeColumnPadding[j] + columnSum[j])]
+                    = new Corner(orderMatrix[i][j], new Point(i + cumulativeRowPadding[i] - rowSum + 1, j + cumulativeColumnPadding[j] + columnSum[j]));
 
-            // bottom left
-            corn[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
 
-            // bottom right
-            corn[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
+                // top right
+                corner[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] + columnSum[j]] = -orderMatrix[i][j];
+                grid.corners[Point.toString(i + cumulativeRowPadding[i] + rowSum, j + cumulativeColumnPadding[j] + columnSum[j])]
+                    = new Corner(orderMatrix[i][j], new Point(i + cumulativeRowPadding[i] + rowSum, j + cumulativeColumnPadding[j] + columnSum[j]));
 
+                // bottom right
+                corner[i + cumulativeRowPadding[i] + rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
+                grid.corners[Point.toString(i + cumulativeRowPadding[i] + rowSum, j + cumulativeColumnPadding[j] - columnSum[j])]
+                    = new Corner(orderMatrix[i][j], new Point(i + cumulativeRowPadding[i] + rowSum + 1, j + cumulativeColumnPadding[j] - columnSum[j]));
+            }
         }
     }
 
-    console.log(corn);
+    console.log(corner);
 
-    var grid = new Grid(len(corn[0]), len(corn));
 
-    // Uses corn array to add corners to grid.
+    // Uses corner array to add cornerers to grid.
     // Should add try/catch statement here.
 
-    return corn;
+    return grid;
     // Strategy - figure out how much padding each column and each row requires.
 }
 
