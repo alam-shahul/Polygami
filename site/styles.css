@@ -1,0 +1,30 @@
+.container-fluid {
+  margin-bottom: 40px;
+}
+
+#width, #height {
+  width: 60px;
+}
+
+#grid {
+  width: 100%;
+}
+
+#grid td {
+  border: 1px solid gray;
+  cursor: pointer;
+}
+
+#grid td.filled {
+  background-color: black;
+}
+
+#grid td:after {
+  content: '';
+  display: block;
+  margin-top: 100%;
+}
+
+#grid td:hover {
+  background-color: lightgray;
+}

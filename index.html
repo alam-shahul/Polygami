@@ -1,15 +1,53 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Libraries -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://edemaine.github.io/fold/dist/fold.js"></script>
+
+    <!-- Data Structures and Algorithms -->
     <script src="structs/point.js"></script>
     <script src="structs/corner.js"></script>
     <script src="structs/crease.js"></script>
     <script src="structs/grid.js"></script>
     <script src="algorithms/cornerFinder.js"></script>
+
+    <!-- Styles -->
+    <link href="site/styles.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="site/scripts.js"></script>
   </head>
 
   <body>
-    <p>Hello, world!</p>
+    <div class="container-fluid">
+      <div class="col-md-6 left-col">
+        <h1>Pixel Input</h1>
+        <form class="form-inline">
+          <div class="row">
+            <div class="col-md-9">
+              <div class="form-group">
+                <label for="width">Width:</label>
+                <input type="number" class="form-control grid-size-input" id="width" value="10">
+                <label for="height">Height:</label>
+                <input type="number" class="form-control grid-size-input" id="height" value="10">
+                <button type="button" class="btn btn-info" id="update-grid-size">Update Grid Size</button>
+              </div>
+            </div>
+            <div class="col-md-3 text-right">
+              <button type="button" class="btn btn-danger" id="clear-grid">Clear Grid</button>
+            </div>
+          </div>
+        </form>
+        <hr>
+        <table id="grid"></table>
+      </div>
+      <div class="col-md-6 right-col">
+        <h1>Crease Pattern</h1>
+        <h1>3D Viewer</h1>
+      </div>
+    </div>
   </body>
 </html>
