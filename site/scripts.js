@@ -68,7 +68,7 @@ function parseGrid() {
 };
 
 function updateCreasePattern(grid) {
-  computeCorners(grid);
+  grid = computeCorners(parseGrid());
   // TODO calculate rest of crease pattern from corners
 };
 
