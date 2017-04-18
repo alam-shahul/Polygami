@@ -40,14 +40,14 @@ class Grid {
 
   // Returns whether crease already exists in the set of Creases in this grid
   creaseExists(crease) {
-    var array = this.creases[Point.toString(crease.start.x, crease.start.y)];
+    var array = this.creases[Point.toString(crease.endpoints[0].x, crease.endpoints[0].y)];
     var i;
     for (i = 0; i < array.length; i++) {
       if (array[i].equals(crease)) {
         return true;
       }
     }
-    array = this.creases[Point.toString(crease.end.x, crease.end.y)];
+    array = this.creases[Point.toString(crease.endpoints[1].x, crease.endpoints[1].y)];
     for (i = 0; i < array.length; i++) {
       if (array[i].equals(crease)) {
         return true;
@@ -59,17 +59,15 @@ class Grid {
   // Creates a Crease starting at (x1, y1) going to (x2, y2) with the specified
   // color and adds it to this grid, if one does not already exist (returns
   // null if a Crease at these endpoints already exists)
-  addCrease(x1, y1, x2, y2, color) {
-    var start = this.point(x1, y1);
-    var end = this.point(x2, y2);
-    var crease = new Crease(start, end, color);
+  addCrease(p1, p2, color) {
+    var crease = new Crease(p1, p2, color);
     if (this.creaseExists(crease)) {
       // The Crease already exists in the Grid, we return null
       return null;
     } else {
       // We add the Crease to our set of creases
-      this.creases[Point.toString(start.x, start.y)].push(crease);
-      this.creases[Point.toString(end.x, end.y)].push(crease);
+      this.creases[Point.toString(p1.x, p1.y)].push(crease);
+      this.creases[Point.toString(p2.x, p2.y)].push(crease);
       return crease;
     }
   }

@@ -1,10 +1,9 @@
 // A Crease represents a crease in the paper that runs from one Point to another
 // Point. Each Crease has a direction of folding (ex. mountain and valley).
 class Crease {
-  constructor(start, end, color) {
-    // start and end are Points
-    this.start = start;
-    this.end = end;
+  constructor(p1, p2, color) {
+    // p1 and p2 are Points
+    this.endpoints = [p1, p2]
     // color represents the crease direction
     this.color = color;
   }
@@ -14,9 +13,11 @@ class Crease {
       return false;
     }
     // The Crease equality operator does NOT consider color
-    if (this.start.equals(obj.start) && this.end.equals(obj.end)) {
-      return true;
+    for (var i in this.endpoints) {
+      if (!(i in obj.endpoints)) {
+        return false;
+      }
     }
-    return false;
+    return true;
   }
 }

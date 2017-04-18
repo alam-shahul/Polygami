@@ -115,8 +115,10 @@ function computeCorners(pixelMatrix) {
 
     console.log(corner);
 
-    // Uses corner array to add cornerers to grid.
+    // Uses corner array to add corners to grid.
     // Should add try/catch statement here.
+
+    console.log(grid.corners);
 
     return grid;
 }
