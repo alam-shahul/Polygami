@@ -5,7 +5,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://edemaine.github.io/fold/dist/fold.js"></script>
+    <!-- <script src="https://edemaine.github.io/fold/dist/fold.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.5.2/svg.min.js"></script>
 
     <!-- Data Structures and Algorithms -->
     <script src="structs/point.js"></script>
@@ -28,7 +29,7 @@
         <h1>Pixel Input</h1>
         <form class="form-inline">
           <div class="row">
-            <div class="col-md-9">
+            <div class="col-sm-9">
               <div class="form-group">
                 <label for="width">Width:</label>
                 <input type="number" class="form-control grid-size-input" id="width" value="10">
@@ -37,7 +38,7 @@
                 <button type="button" class="btn btn-info" id="update-grid-size">Update Grid Size</button>
               </div>
             </div>
-            <div class="col-md-3 text-right">
+            <div class="col-sm-3 text-right">
               <button type="button" class="btn btn-danger" id="clear-grid">Clear Grid</button>
             </div>
           </div>
@@ -46,8 +47,8 @@
         <table id="grid"></table>
       </div>
       <div class="col-md-6 right-col">
-        <h1>Crease Pattern</h1>
-        <h1>3D Viewer</h1>
+        <h1>Crease Pattern <a id="export-svg" href-lang="image/svg+xml" href="" download><button type="button" class="btn btn-info">Export to SVG</button></a></h1>
+        <div id="viewer"></div>
       </div>
     </div>
   </body>

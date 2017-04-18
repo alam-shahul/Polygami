@@ -26,6 +26,9 @@ class Grid {
         this.creases[point] = [];
       }
     }
+
+    // Instantiate a set of Creases
+    this.creaseSet = new Set();
   }
 
   // Returns the Point at an (x, y) location in this grid
@@ -68,7 +71,107 @@ class Grid {
       // We add the Crease to our set of creases
       this.creases[Point.toString(p1.x, p1.y)].push(crease);
       this.creases[Point.toString(p2.x, p2.y)].push(crease);
+      this.creaseSet.add(crease);
       return crease;
     }
+  }
+
+  // Returns a string in FOLD format representing this grid.
+  toFOLD() {
+    var fold = '';
+    var verticesStr = '';
+    var facesStr = '';
+    var edgesStr = '';
+    var assignmentsStr = '';
+    var vertices = [];
+    var edges = [];
+    var assignments = [];
+    var i;
+
+    // Write out file info
+    fold += '{';
+    fold += '"file_spec": 1,';
+    fold += '"file_creator": "A text editor",';
+    fold += '"file_author": "Polygami",';
+    fold += '"file_classes": ["singleModel"],';
+    fold += '"frame_title": "Cube extrusion crease pattern",';
+    fold += '"frame_classes": ["creasePattern"],';
+    fold += '"frame_attributes": ["2D"],';
+
+    // Set up four corners and edges of paper
+    vertices.push('0,0');
+    vertices.push('0,' + this.h);
+    vertices.push(this.w + ',0');
+    vertices.push(this.w + ',' + this.h);
+    edges.push('0,1');
+    edges.push('0,2');
+    edges.push('1,3');
+    edges.push('2,3');
+    for (i = 0; i < 4; i++) {
+      assignments.push('B');
+    }
+
+    // Find vertices and edges
+    this.creaseSet.forEach(function(crease) {
+      var startIndex, endIndex;
+      var vertex = crease.start.x + ',' + crease.start.y;
+      if (vertices.includes(vertex)) {
+        startIndex = vertices.indexOf(vertex);
+      } else {
+        startIndex = vertices.push(vertex) - 1;
+      }
+
+      vertex = crease.end.x + ',' + crease.end.y;
+      if (vertices.includes(vertex)) {
+        endIndex = vertices.indexOf(vertex);
+      } else {
+        endIndex = vertices.push(vertex) - 1;
+      }
+      
+      if (!edges.includes(startIndex + ',' + endIndex)) {
+        edges.push(startIndex + ',' + endIndex);
+        assignments.push(crease.color);
+      }
+    });
+
+    // Write out vertices
+    verticesStr += '"vertices_coords": [';
+    for (i = 0; i < vertices.length - 1; i++) {
+      verticesStr += '[' + vertices[i] + ',0],';
+    }
+    verticesStr += '[' + vertices[vertices.length - 1] + ',0]';
+    verticesStr += '],';
+
+    // Write out faces
+    facesStr += '"faces_vertices": [';
+    facesStr += '[0,2,3,1]';
+    facesStr += '],';
+
+    // Write out edges
+    edgesStr += '"edges_vertices": [';
+    for (i = 0; i < edges.length - 1; i++) {
+      edgesStr += '[' + edges[i] + '],';
+    }
+    edgesStr += '[' + edges[edges.length - 1] + ']';
+    edgesStr += '],';
+
+    // Write out edge assignments
+    assignmentsStr += '"edges_assignment": [';
+    for (i = 0; i < assignments.length - 1; i++) {
+      assignmentsStr += '"' + assignments[i] + '",';
+    }
+    assignmentsStr += '"' + assignments[assignments.length - 1] + '"';
+    assignmentsStr += ']';
+
+    fold += verticesStr;
+    fold += facesStr;
+    fold += edgesStr;
+    fold += assignmentsStr;
+    fold += '}';
+
+    console.log('FOLD string:');
+    console.log(fold);
+
+    return fold;
   }
 }
