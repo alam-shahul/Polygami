@@ -59,9 +59,9 @@ class Grid {
     return false;
   }
 
-  // Creates a Crease starting at (x1, y1) going to (x2, y2) with the specified
-  // color and adds it to this grid, if one does not already exist (returns
-  // null if a Crease at these endpoints already exists)
+  // Creates a Crease with endpoints p1 and p2 with the specified color and
+  // adds it to this grid, if one does not already exist (returns null if a
+  // Crease at these endpoints already exists)
   addCrease(p1, p2, color) {
     var crease = new Crease(p1, p2, color);
     if (this.creaseExists(crease)) {
@@ -168,9 +168,6 @@ class Grid {
     fold += edgesStr;
     fold += assignmentsStr;
     fold += '}';
-
-    console.log('FOLD string:');
-    console.log(fold);
 
     return fold;
   }
