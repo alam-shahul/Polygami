@@ -13,8 +13,8 @@ class Crease {
       return false;
     }
     // The Crease equality operator does NOT consider color
-    for (var i in this.endpoints) {
-      if (!(i in obj.endpoints)) {
+    for (var i = 0; i < this.endpoints.length; i++) {
+      if (!(obj.endpoints.includes(this.endpoints[i]))) {
         return false;
       }
     }
