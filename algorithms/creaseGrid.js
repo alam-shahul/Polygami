@@ -23,9 +23,14 @@ function creaseGrid(grid) {
 //    for(var i = 0; i < currCorners.length; i++) {
 //      corner = currCorners[i];
 
+    console.log(grid.corners);
     for(var i in grid.corners) {
+      
+
       corner = grid.corners[i];
+
       console.log(corner);
+
       // Draw outside mountains
       if (corner.direction === 0) {
         currentX = corner.tip.x;
@@ -92,7 +97,9 @@ function creaseGrid(grid) {
       if (corner.direction === 0) {
         // Corner folds
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 0.5, corner.tip.y - 1), "V");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y - 1), new Point(corner.tip.x - 0.5, corner.tip.y - 1), "M");
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y - 0.5), "V");
+        grid.addCrease(new Point(corner.tip.x - 1, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y - 0.5), "M");
         grid.addCrease(new Point(corner.tip.x - 0.5, corner.tip.y - 1), new Point(corner.tip.x - 1, corner.tip.y - 0.5), "V");
 
         currentX = corner.tip.x - 0.5;
@@ -113,7 +120,9 @@ function creaseGrid(grid) {
       else if (corner.direction === 1) {
         // Corner folds
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 0.5, corner.tip.y - 1), "V");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y - 1), new Point(corner.tip.x + 0.5, corner.tip.y - 1), "M");
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y - 0.5), "V");
+        grid.addCrease(new Point(corner.tip.x + 1, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y - 0.5), "M");
         grid.addCrease(new Point(corner.tip.x + 0.5, corner.tip.y - 1), new Point(corner.tip.x + 1, corner.tip.y - 0.5), "V");
 
         currentX = corner.tip.x + 0.5;
@@ -134,7 +143,9 @@ function creaseGrid(grid) {
       else if (corner.direction === 2) {
         // Corner folds
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 0.5, corner.tip.y + 1), "V");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y + 1), new Point(corner.tip.x - 0.5, corner.tip.y + 1), "M");
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "V");
+        grid.addCrease(new Point(corner.tip.x - 1, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "M");
         grid.addCrease(new Point(corner.tip.x - 0.5, corner.tip.y + 1), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "V");
 
         currentX = corner.tip.x - 0.5;
@@ -155,7 +166,9 @@ function creaseGrid(grid) {
       else if (corner.direction === 3) {
         // Corner folds
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 0.5, corner.tip.y + 1), "V");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y + 1), new Point(corner.tip.x + 0.5, corner.tip.y + 1), "M");
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "V");
+        grid.addCrease(new Point(corner.tip.x + 1, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "M");
         grid.addCrease(new Point(corner.tip.x + 0.5, corner.tip.y + 1), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "V");
 
         currentX = corner.tip.x + 0.5;
@@ -175,15 +188,6 @@ function creaseGrid(grid) {
 
 //    }
 // End of loop for Corners of certain priority
-    return grid;
   }
+  return grid;
 }
-
-g = new Grid(4, 4);
-g.corners[Point.toString(1, 1)] = new Corner(1, new Point(2,2), 0);
-
-console.log(g.corners);
-
-creaseGrid(g);
-
-console.log(g.creases);
