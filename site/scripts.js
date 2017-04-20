@@ -4,22 +4,8 @@ var height = 10;
 const VIEWER_SIZE = 600;
 
 var draw;
-var test;
 
 $(document).ready(function() {
-  // Test grid for SVG viewer:
-  test = new Grid(10, 10);
-  test.addCrease(test.point(0, 0), test.point(4, 0), 'V');
-  test.addCrease(test.point(0, 1), test.point(4, 1), 'M');
-  test.addCrease(test.point(0, 2), test.point(4, 2), 'V');
-  test.addCrease(test.point(0, 3), test.point(4, 3), 'M');
-  test.addCrease(test.point(0, 4), test.point(4, 4), 'V');
-  test.addCrease(test.point(0, 5), test.point(4, 5), 'M');
-  test.addCrease(test.point(0, 6), test.point(4, 6), 'V');
-  test.addCrease(test.point(0, 7), test.point(4, 7), 'M');
-  test.addCrease(test.point(0, 8), test.point(4, 8), 'V');
-  test.addCrease(test.point(0, 9), test.point(4, 9), 'M');
-
   // Set up crease pattern viewer
   draw = SVG('viewer').size(VIEWER_SIZE, VIEWER_SIZE);
 
@@ -68,15 +54,7 @@ function setupGrid() {
 
 // Update the crease pattern and 3D viewer
 function updateOutput() {
-  var grid = parseGrid();
-  var pattern = updateCreasePattern(grid);
-  // TODO: Actually use pattern instead of test grid
-  // updateViewer(test);
-
-  // Test for hardcoded Grid
-  g = new Grid(10, 10);
-  g.corners[Point.toString(1, 1)] = new Corner(1, new Point(2,2), 0);
-  updateViewer(creaseGrid(g));
+  updateViewer(creaseGrid(computeCorners(parseGrid())));
 };
 
 // Parses the pixel input into a 2D array
@@ -95,25 +73,20 @@ function parseGrid() {
   return grid;
 };
 
-function updateCreasePattern(grid) {
-  grid = computeCorners(parseGrid());
-  // TODO calculate rest of crease pattern from corners
-};
-
 function updateViewer(grid) {
   // Clear any existing crease pattern
   draw.clear();
 
   // Figure out scale factor to fit into viewer window
   var scale;
-  if (width > height) {
-    scale = VIEWER_SIZE / width;
+  if (grid.w > grid.h) {
+    scale = VIEWER_SIZE / grid.w;
   } else {
-    scale = VIEWER_SIZE / height;
+    scale = VIEWER_SIZE / grid.h;
   }
 
   // Draw paper
-  draw.rect(width * scale, height * scale).attr({ fill: '#fff' }).stroke({ width: 3 });
+  draw.rect(grid.w * scale, grid.h * scale).attr({ fill: '#fff' }).stroke({ width: 3 });
 
   // Draw creases
   grid.creaseSet.forEach(function(crease) {
