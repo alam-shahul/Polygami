@@ -71,8 +71,12 @@ function updateOutput() {
   var grid = parseGrid();
   var pattern = updateCreasePattern(grid);
   // TODO: Actually use pattern instead of test grid
-  updateViewer(test);
-  // updateViewer(pattern);
+  // updateViewer(test);
+
+  // Test for hardcoded Grid
+  g = new Grid(10, 10);
+  g.corners[Point.toString(1, 1)] = new Corner(1, new Point(2,2), 0);
+  updateViewer(creaseGrid(g));
 };
 
 // Parses the pixel input into a 2D array
