@@ -9,6 +9,14 @@ function creaseGrid(grid) {
   var currentX;
   var currentY;
 
+  for(var j in grid.extruded) {
+    faceBottomLeft = grid.extruded[j];
+    grid.addCrease(new Point(faceBottomLeft.x, faceBottomLeft.y), new Point(faceBottomLeft.x, faceBottomLeft.y + 1), "E");
+    grid.addCrease(new Point(faceBottomLeft.x, faceBottomLeft.y + 1), new Point(faceBottomLeft.x + 1, faceBottomLeft.y + 1), "E");
+    grid.addCrease(new Point(faceBottomLeft.x + 1, faceBottomLeft.y + 1), new Point(faceBottomLeft.x + 1, faceBottomLeft.y), "E");
+    grid.addCrease(new Point(faceBottomLeft.x + 1, faceBottomLeft.y), new Point(faceBottomLeft.x, faceBottomLeft.y), "E"); 
+  }
+
   // Go through corners in priority order
 //  for(var currPriority = 1; currPriority <= grid.corners.length/4; currPriority ++) {
 //    // Make dictionary of Corners with priority = currPriority
@@ -23,7 +31,8 @@ function creaseGrid(grid) {
 //    for(var i = 0; i < currCorners.length; i++) {
 //      corner = currCorners[i];
 
-    console.log(grid.corners);
+    //console.log(grid.corners);
+
     for(var i in grid.corners) {
       
 
@@ -31,6 +40,8 @@ function creaseGrid(grid) {
 
       console.log(corner);
 
+
+      
       // Draw outside mountains
       if (corner.direction === 0) {
         currentX = corner.tip.x;
@@ -189,5 +200,6 @@ function creaseGrid(grid) {
 //    }
 // End of loop for Corners of certain priority
   }
+  console.log(grid.extruded);
   return grid;
 }

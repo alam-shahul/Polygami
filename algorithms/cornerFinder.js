@@ -87,9 +87,13 @@ function computeCorners(pixelMatrix) {
                 rowSum += 1;
                 columnSum[j] += 1;
             }
+            // Fill everything that isn't a corner
             corner[i + cumulativeRowPadding[i]][j + cumulativeColumnPadding[j]] = orderMatrix[i][j];
 
             if(orderMatrix[i][j] !== 0) {
+                // Add corresponding extruded face
+                grid.extruded[Point.toString(i + cumulativeRowPadding[i], j + cumulativeColumnPadding[j])] = new Point(i + cumulativeRowPadding[i],  j + cumulativeColumnPadding[j]);
+
                 // bottom left
                 corner[i + cumulativeRowPadding[i] - rowSum][j + cumulativeColumnPadding[j] - columnSum[j]] = -orderMatrix[i][j];
                 grid.corners[Point.toString(i + cumulativeRowPadding[i] - rowSum, j + cumulativeColumnPadding[j] - columnSum[j])]
@@ -113,7 +117,7 @@ function computeCorners(pixelMatrix) {
         }
     }
 
-
+    console.log(corner);
     return grid;
 }
 
