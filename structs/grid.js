@@ -72,11 +72,38 @@ class Grid {
       return null;
     } else {
       // We add the Crease to our set of creases
+      
       this.creases[Point.toString(p1.x, p1.y)].push(crease);
       this.creases[Point.toString(p2.x, p2.y)].push(crease);
       this.creaseSet.add(crease);
       return crease;
     }
+  }
+  
+  // Delete Crease between certain points of a certain color
+  deleteCrease(p1, p2, color) {
+    var crease = new Crease(p1, p2, color);
+    console.log(crease);
+    console.log(p1);
+    console.log(this.creases[Point.toString(p1.x, p1.y)]);
+    if (this.creaseExists(crease)) {
+      for(var i = 0; i < this.creases[Point.toString(p1.x, p1.y)].length; i++) {
+        console.log("hurray");
+        if((this.creases[Point.toString(p1.x, p1.y)][i]).equals(crease)) {
+          console.log("wow");
+          this.creases[Point.toString(p1.x, p1.y)].splice(i, 1);
+        }
+      }
+      console.log("lol");
+      for(var j = 0; j < this.creases[Point.toString(p2.x, p2.y)].length; j++) {
+        if((this.creases[Point.toString(p2.x, p2.y)][j]).equals(crease)) {
+          console.log("amazing");
+          this.creases[Point.toString(p2.x, p2.y)].splice(j, 1);
+        }
+      }
+    }
+    console.log(crease);
+    console.log(this.creases[Point.toString(p1.x, p1.y)]);
   }
 
   // Returns a string in FOLD format representing this grid.
