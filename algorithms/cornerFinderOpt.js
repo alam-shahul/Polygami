@@ -7,6 +7,7 @@ function len(x) {return x.length;}
 function computeCorners(pixelMatrix) {
     var N = len(pixelMatrix);
     var M = len(pixelMatrix[0]);
+    console.log(N, M);
 
     var rowPadding = [];
     var columnPadding = [];
@@ -43,9 +44,6 @@ function computeCorners(pixelMatrix) {
     while(cumulativeColumnPadding.push(cumulativeColumnPadding[cumulativeColumnPadding.length - 1]
         + columnPadding[cumulativeColumnPadding.length - 1] + columnPadding[cumulativeColumnPadding.length]) < M);
 
-    // console.log(cumulativeRowPadding);
-    // console.log(cumulativeColumnPadding);
-
     var order = 1;
 
     var orderMatrix = pixelMatrix.slice();
@@ -61,9 +59,9 @@ function computeCorners(pixelMatrix) {
     // console.log(orderMatrix);
 
     var oldN = N;
-    N = N + 2 * cumulativeRowPadding[N-1];
+    N = N + cumulativeRowPadding[N-1] + rowPadding[N-1];
     var oldM = M;
-    M = M + 2 * cumulativeColumnPadding[M-1];
+    M = M + cumulativeColumnPadding[M-1] + columnPadding[M-1];
 
     var corner = [];
 
