@@ -25,7 +25,44 @@ function creaseGrid(grid) {
 
     //console.log(grid.corners);
 
-    var colorSense;
+    for(var i in grid.corners) {
+      corner = grid.corners[i];
+
+      if (corner.direction === 0) {
+
+        // Corner folds
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 0.5, corner.tip.y - 1), "C");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y - 1), new Point(corner.tip.x - 0.5, corner.tip.y - 1), "M90");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y - 0.5), "C");
+        grid.addCrease(new Point(corner.tip.x - 1, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y - 0.5), "M90");
+        grid.addCrease(new Point(corner.tip.x - 0.5, corner.tip.y - 1), new Point(corner.tip.x - 1, corner.tip.y - 0.5), "C");
+      }
+      else if (corner.direction === 1) {
+        // Corner folds
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 0.5, corner.tip.y - 1), "C");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y - 1), new Point(corner.tip.x + 0.5, corner.tip.y - 1), "M90");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y - 0.5), "C");
+        grid.addCrease(new Point(corner.tip.x + 1, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y - 0.5), "M90");
+        grid.addCrease(new Point(corner.tip.x + 0.5, corner.tip.y - 1), new Point(corner.tip.x + 1, corner.tip.y - 0.5), "C");
+      }
+      else if (corner.direction === 2) {
+        // Corner folds
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 0.5, corner.tip.y + 1), "C");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y + 1), new Point(corner.tip.x - 0.5, corner.tip.y + 1), "M90");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "C");
+        grid.addCrease(new Point(corner.tip.x - 1, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "M90");
+        grid.addCrease(new Point(corner.tip.x - 0.5, corner.tip.y + 1), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "C");
+    }
+      else if (corner.direction === 3) {
+        // Corner folds
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 0.5, corner.tip.y + 1), "C");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y + 1), new Point(corner.tip.x + 0.5, corner.tip.y + 1), "M90");
+        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "C");
+        grid.addCrease(new Point(corner.tip.x + 1, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "M90");
+        grid.addCrease(new Point(corner.tip.x + 0.5, corner.tip.y + 1), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "C");
+    }
+  }
+
 
     for(var i in grid.corners) {
       
@@ -132,12 +169,6 @@ function creaseGrid(grid) {
 
       // Draw inside valleys and corner folds
       if (corner.direction === 0) {
-        // Corner folds
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 0.5, corner.tip.y - 1), "C");
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y - 1), new Point(corner.tip.x - 0.5, corner.tip.y - 1), "M90");
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y - 0.5), "C");
-        grid.addCrease(new Point(corner.tip.x - 1, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y - 0.5), "M90");
-        grid.addCrease(new Point(corner.tip.x - 0.5, corner.tip.y - 1), new Point(corner.tip.x - 1, corner.tip.y - 0.5), "C");
 
         currentX = corner.tip.x - 0.5;
         currentY = corner.tip.y - 1;
@@ -162,12 +193,6 @@ function creaseGrid(grid) {
       }
 
       else if (corner.direction === 1) {
-        // Corner folds
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 0.5, corner.tip.y - 1), "C");
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y - 1), new Point(corner.tip.x + 0.5, corner.tip.y - 1), "M90");
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y - 0.5), "C");
-        grid.addCrease(new Point(corner.tip.x + 1, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y - 0.5), "M90");
-        grid.addCrease(new Point(corner.tip.x + 0.5, corner.tip.y - 1), new Point(corner.tip.x + 1, corner.tip.y - 0.5), "C");
 
         currentX = corner.tip.x + 0.5;
         currentY = corner.tip.y - 1;
@@ -193,12 +218,6 @@ function creaseGrid(grid) {
       }
 
       else if (corner.direction === 2) {
-        // Corner folds
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 0.5, corner.tip.y + 1), "C");
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y + 1), new Point(corner.tip.x - 0.5, corner.tip.y + 1), "M90");
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "C");
-        grid.addCrease(new Point(corner.tip.x - 1, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "M90");
-        grid.addCrease(new Point(corner.tip.x - 0.5, corner.tip.y + 1), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "C");
 
         currentX = corner.tip.x - 0.5;
         currentY = corner.tip.y + 1;
@@ -224,12 +243,6 @@ function creaseGrid(grid) {
       }
 
       else if (corner.direction === 3) {
-        // Corner folds
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 0.5, corner.tip.y + 1), "C");
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y + 1), new Point(corner.tip.x + 0.5, corner.tip.y + 1), "M90");
-        grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "C");
-        grid.addCrease(new Point(corner.tip.x + 1, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "M90");
-        grid.addCrease(new Point(corner.tip.x + 0.5, corner.tip.y + 1), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "C");
 
         currentX = corner.tip.x + 0.5;
         currentY = corner.tip.y + 1;
@@ -570,26 +583,34 @@ function chooseCrease(grid, color, x, y, xInc, yInc) {
   var countV90 = countCreaseByColor(grid, new Point(x, y), "V90");
 
   // Not sure if this is useful, but will stop drawing after it hits the tip of another corner (for pleat-sharing)?
-  if(cornerFoldCount === 2 && color === "M" && count === 3) {
+
+  if(cornerFoldCount === 2 && color === "V" && count === 1) {
+    return -1;
+  }
+  else if(cornerFoldCount === 4 && color === "V") {
+    return -1;
+  }
+  else if(cornerFoldCount === 2 && color === "M" && count === 3) {
     return -1;
   }
   // Switch orientation of 90-degree folds when an outside mountain runs over them.
-  else if(countM90 === 1 && cornerFoldCount === 2 && color === "M" && count === 1) {
+  else if(countM90 === 1 && cornerFoldCount === 2 && color === "M" && count === 1 && oppCount === 1) {
     grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");
   }
-  else if(countV90 === 1 && cornerFoldCount === 2 && color === "M" && count === 1) {
+  else if(countV90 === 1 && cornerFoldCount === 2 && color === "M" && count === 1 && oppCount === 1) {
     grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
   }
 
-  else if(countV90 === 1 && color === "M" && count === 2) {
+
+  else if(countV90 === 2 && color === "M" && count === 2) {
     grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90")
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
   }
 
-  else if(countM90 === 1 && color === "M" && count === 3) {
-    console.log("JKJKHKLHKJ");
+  else if(countM90 === 2 && color === "M" && count === 3) {
+  console.log("Hello");
     grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");
   }
