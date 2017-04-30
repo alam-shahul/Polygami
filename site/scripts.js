@@ -86,29 +86,29 @@ function updateViewer(grid) {
   }
 
   // Draw paper
-  draw.rect(grid.h * scale, grid.w * scale).attr({ fill: '#fff' }).stroke({ width: 3 });
+  draw.rect(grid.w * scale, grid.h * scale).attr({ fill: '#fff' }).stroke({ width: 3 });
 
   // Draw creases
   grid.creaseSet.forEach(function(crease) {
     // Flip the y-axis for drawing to screen
     if (crease.color === 'M') {
       // Mountains are red
-      draw.line(crease.endpoints[0].x * scale, (grid.w - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.w - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#f00' });
+      draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#f00' });
     } else if (crease.color === 'V') {
       // Valleys are blue
-      draw.line(crease.endpoints[0].x * scale, (grid.w - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.w - crease.endpoints[1].y) * scale).attr('fill', 'none').stroke({ width: 1, color: '#00f', dasharray: '5, 5' });
+      draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).attr('fill', 'none').stroke({ width: 1, color: '#00f', dasharray: '5, 5' });
     } else if (crease.color === 'M90') {
       // 90-degree mountain folds are orange
-      draw.line(crease.endpoints[0].x * scale, (grid.w - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.w - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#FFA500' });
+      draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#FFA500' });
     } else if (crease.color === 'V90') {
       // 90-degree valley folds are green
-      draw.line(crease.endpoints[0].x * scale, (grid.w - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.w - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#008000' });
+      draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#008000' });
     } else if (crease.color === 'C') {
       // Triangle of corner folds are purple
-      draw.line(crease.endpoints[0].x * scale, (grid.w - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.w - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#800080' });
+      draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#800080' });
     } else {
       // By default, draw in black
-      draw.line(crease.endpoints[0].x * scale, (grid.w - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.w - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#000' });
+      draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#000' });
     }
   });
 
