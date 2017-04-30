@@ -72,7 +72,7 @@ function computeCorners(pixelMatrix) {
         }
     }
 
-    var grid = new Grid(len(corner[0]), len(corner));
+    var grid = new Grid(len(corner), len(corner[0]));
 
     var columnSum = [];
     // fill it with 0s
