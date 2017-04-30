@@ -4,6 +4,7 @@ var height = 10;
 const VIEWER_SIZE = 600;
 
 var draw;
+var colorSchemeExtended = true;
 
 $(document).ready(function() {
   // Set up crease pattern viewer
@@ -13,6 +14,13 @@ $(document).ready(function() {
   setupGrid();
 
   // Event handlers
+  $('.grid-size-input').keypress(function(e) {
+    if (e.which == 13) { // Enter key
+      $('#update-grid-size').click();
+      return false;
+    }
+  });
+
   $('#update-grid-size').click(function() {
     width = parseInt($('#width').val());
     height = parseInt($('#height').val());
@@ -26,6 +34,24 @@ $(document).ready(function() {
       }
     }
     updateOutput();
+  });
+
+  $('#color-scheme-mv').click(function() {
+    if (!($(this).hasClass('active'))) {
+      colorSchemeExtended = false;
+      $('.color-scheme-picker').removeClass('active');
+      $(this).addClass('active');
+      updateOutput();
+    }
+  });
+
+  $('#color-scheme-extended').click(function() {
+    if (!($(this).hasClass('active'))) {
+      colorSchemeExtended = true;
+      $('.color-scheme-picker').removeClass('active');
+      $(this).addClass('active');
+      updateOutput();
+    }
   });
 });
 
@@ -98,14 +124,29 @@ function updateViewer(grid) {
       // Valleys are blue
       draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).attr('fill', 'none').stroke({ width: 1, color: '#00f', dasharray: '5, 5' });
     } else if (crease.color === 'M90') {
-      // 90-degree mountain folds are orange
-      draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#FFA500' });
+      if (colorSchemeExtended) {
+        // 90-degree mountain folds are orange
+        draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#FFA500' });
+      } else {
+        // MV colors; mountain folds are red
+        draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#f00' });
+      }
     } else if (crease.color === 'V90') {
-      // 90-degree valley folds are green
-      draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#008000' });
+      if (colorSchemeExtended) {
+        // 90-degree valley folds are green
+        draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#008000' });
+      } else {
+        // MV colors; valley folds are blue
+        draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).attr('fill', 'none').stroke({ width: 1, color: '#00f', dasharray: '5, 5' });
+      }
     } else if (crease.color === 'C') {
-      // Triangle of corner folds are purple
-      draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#800080' });
+      if (colorSchemeExtended) {
+        // Triangle of corner folds are purple
+        draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#800080' });
+      } else {
+        // MV colors; valley folds are blue
+        draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).attr('fill', 'none').stroke({ width: 1, color: '#00f', dasharray: '5, 5' });
+      }
     } else {
       // By default, draw in black
       draw.line(crease.endpoints[0].x * scale, (grid.h - crease.endpoints[0].y) * scale, crease.endpoints[1].x * scale, (grid.h - crease.endpoints[1].y) * scale).stroke({ width: 1, color: '#000' });
