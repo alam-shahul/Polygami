@@ -19,7 +19,9 @@
     <link href="site/styles.css" rel="stylesheet">
 
     <!-- Scripts -->
-    <script src="site/scripts.js"></script>
+    <script src="site/ThreeCanvas.js"></script>
+    <script src="site/Cube.js"></script>
+    <script src="site/Plane.js"></script>
   </head>
 
   <body>
@@ -35,6 +37,10 @@
                 <label for="height">Height:</label>
                 <input type="number" class="form-control grid-size-input" id="height" value="10">
                 <button type="button" class="btn btn-info" id="update-grid-size">Update Grid Size</button>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-default input-mode-picker" id="input-mode-2d">2D Input</button>
+                  <button type="button" class="btn btn-default input-mode-picker active" id="input-mode-3d">3D Input</button>
+                </div>
               </div>
             </div>
             <div class="col-sm-3 text-right">
@@ -43,17 +49,22 @@
           </div>
         </form>
         <hr>
-        <table id="grid"></table>
+        <table id="grid" style="display: none"></table>
+        <div id="input-3d"></div>
       </div>
       <div class="col-md-6 right-col">
         <h1>Crease Pattern <a id="export-svg" href-lang="image/svg+xml" href="" download><button type="button" class="btn btn-info">Export to SVG</button></a>
           <div class="btn-group" role="group">
-            <button class="btn btn-default color-scheme-picker" id="color-scheme-mv">MV Colors</button>
-            <button class="btn btn-default color-scheme-picker active" id="color-scheme-extended">Extended Colors</button>
+            <button type="button" class="btn btn-default color-scheme-picker" id="color-scheme-mv">MV Colors</button>
+            <button type="button" class="btn btn-default color-scheme-picker active" id="color-scheme-extended">Extended Colors</button>
           </div>
         </h1>
         <div id="viewer"></div>
       </div>
     </div>
+
+    <!-- Scripts to run after body is constructed -->
+    <script src="site/voxels.js"></script>
+    <script src="site/scripts.js"></script>
   </body>
 </html>

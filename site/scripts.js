@@ -5,6 +5,7 @@ const VIEWER_SIZE = 600;
 
 var draw;
 var colorSchemeExtended = true;
+var inputMode3D = true;
 
 $(document).ready(function() {
   // Set up crease pattern viewer
@@ -34,6 +35,28 @@ $(document).ready(function() {
       }
     }
     updateOutput();
+  });
+
+  $('#input-mode-2d').click(function() {
+    if (!($(this).hasClass('active'))) {
+      inputMode3D = false;
+      $('.input-mode-picker').removeClass('active');
+      $(this).addClass('active');
+      $('#grid').show();
+      $('#input-3d').hide();
+      // TODO: Update output
+    }
+  });
+
+  $('#input-mode-3d').click(function() {
+    if (!($(this).hasClass('active'))) {
+      inputMode3D = true;
+      $('.input-mode-picker').removeClass('active');
+      $(this).addClass('active');
+      $('#grid').hide();
+      $('#input-3d').show();
+      // TODO: Update output
+    }
   });
 
   $('#color-scheme-mv').click(function() {
