@@ -595,12 +595,6 @@ function chooseCrease(grid, color, x, y, xInc, yInc) {
     return -1;
   }
 
-  // Delete superfluous outside mountain folds
-  else if(grid.creaseExists(new Crease(new Point(x,y), new Point(x + xInc, y + yInc), "M")) && color === "M") {
-    grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M");
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M");
-  }
-
   // Switch orientation of 90-degree folds when an outside mountain runs over them.
   else if(grid.creaseExists(new Crease(new Point(x,y), new Point(x + xInc, y + yInc), "M90")) && color === "M") {
     grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
@@ -612,17 +606,22 @@ function chooseCrease(grid, color, x, y, xInc, yInc) {
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
   }
 
+  // Last check: if outside mountain is entering another corner, stop outside mountain.
+  else if(color === "M" && countM90 === 1 && countCreaseByColor(grid, new Point(x + 2*xInc, y+2*yInc), "C") === 2) {
+    return -1;
+  }
+  // Delete superfluous outside mountain folds
+  else if(grid.creaseExists(new Crease(new Point(x,y), new Point(x + xInc, y + yInc), "M")) && color === "M") {
+    grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M");
+    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M");
+  }
+
   // Ensures that junctions have three creases of the same color and one crease of a different color
   else if(count === 1 && oppCount === 2) {
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), oppColor(color));
   }
   else if(count === 3 && oppCount === 0) {
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), oppColor(color));
-  }
-  
-  // Last check: if outside mountain is entering another corner, stop outside mountain.
-  else if(color === "M" && countM90 === 1 && countCreaseByColor(grid, new Point(x + 2*xInc, y+2*yInc), "C") === 2) {
-    return -1;
   }
 
   // Else, draw normal crease
