@@ -12,9 +12,9 @@ class Crease {
     if (typeof obj !== typeof this) {
       return false;
     }
-    // The Crease equality operator does NOT consider color
+    // The Crease equality operator considers color
     for (var i = 0; i < this.endpoints.length; i++) {
-      if (!(this.includes(obj.endpoints, this.endpoints[i]))) {
+      if (!(this.includes(obj.endpoints, this.endpoints[i])) || !(this.color === obj.color)) {
         return false;
       }
     }

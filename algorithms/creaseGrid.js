@@ -29,7 +29,6 @@ function creaseGrid(grid) {
       corner = grid.corners[i];
 
       if (corner.direction === 0) {
-
         // Corner folds
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 0.5, corner.tip.y - 1), "C");
         grid.addCrease(new Point(corner.tip.x, corner.tip.y - 1), new Point(corner.tip.x - 0.5, corner.tip.y - 1), "M90");
@@ -52,7 +51,7 @@ function creaseGrid(grid) {
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "C");
         grid.addCrease(new Point(corner.tip.x - 1, corner.tip.y), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "M90");
         grid.addCrease(new Point(corner.tip.x - 0.5, corner.tip.y + 1), new Point(corner.tip.x - 1, corner.tip.y + 0.5), "C");
-    }
+      }
       else if (corner.direction === 3) {
         // Corner folds
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 0.5, corner.tip.y + 1), "C");
@@ -60,8 +59,8 @@ function creaseGrid(grid) {
         grid.addCrease(new Point(corner.tip.x, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "C");
         grid.addCrease(new Point(corner.tip.x + 1, corner.tip.y), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "M90");
         grid.addCrease(new Point(corner.tip.x + 0.5, corner.tip.y + 1), new Point(corner.tip.x + 1, corner.tip.y + 0.5), "C");
+      }
     }
-  }
 
 
     for(var i in grid.corners) {
@@ -491,9 +490,11 @@ function countCreaseByColor(grid, point, color) {
   
   var creases = grid.creases[Point.toString(point.x, point.y)];
 
-  for(var i = 0; i < creases.length; i++) {
-    if(creases[i].color === color) {
-    count += 1;
+  if(point.x <= grid.w && point.y <= grid.h) {
+    for(var i = 0; i < creases.length; i++) {
+      if(creases[i].color === color) {
+        count += 1;
+      }
     }
   }
   return count;
@@ -514,8 +515,11 @@ function sidesOfCornersChooseCrease(grid, x, y, xInc, yInc) {
  // var countVTwoAhead = countCreaseByColor(grid, new Point(x + 3*xInc, y + 3*yInc), "V");
 
   if(countMAhead === 0 && countVAhead === 0) {
+    if(countM90 === 1 && countV90 === 1) {
+      return -1
+    }
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");    
-    grid.addCrease(new Point(x, y), new Point(x + 2*xInc, y + 2*yInc), "V90");
+    grid.addCrease(new Point(x + xInc, y + yInc), new Point(x + 2*xInc, y + 2*yInc), "V90");
  //   if(!(countMTwoAhead === 0 && countVTwoAhead === 0)) {
       return -1;
  //   }
@@ -549,9 +553,11 @@ function tipToTipChooseCrease(grid, x, y, xInc, yInc) {
 
   if(countMAhead === 0 && countVAhead === 0) {
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");    
-    grid.addCrease(new Point(x, y), new Point(x + 2*xInc, y + 2*yInc), "M90");
+    grid.addCrease(new Point(x + xInc, y+yInc), new Point(x + 2*xInc, y + 2*yInc), "M90");
     return -1;
   }
+  
+  
   else if(cornerFoldCount === 2 && countM === 2 && countV90 === 0) {
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
   }
@@ -579,42 +585,33 @@ function chooseCrease(grid, color, x, y, xInc, yInc) {
   var countM90 = countCreaseByColor(grid, new Point(x, y), "M90");
   var countV90 = countCreaseByColor(grid, new Point(x, y), "V90");
 
-  // Not sure if this is useful, but will stop drawing after it hits the tip of another corner (for pleat-sharing)?
+  // For pleat-sharing gadget, don't draw inside valleys if they clash
 
   if(cornerFoldCount === 2 && color === "V" && count === 1) {
     return -1;
   }
+
   else if(cornerFoldCount === 4 && color === "V") {
     return -1;
   }
-  else if(cornerFoldCount === 2 && color === "M" && count === 3) {
-    return -1;
+
+  // Delete superfluous outside mountain folds
+  else if(grid.creaseExists(new Crease(new Point(x,y), new Point(x + xInc, y + yInc), "M")) && color === "M") {
+    grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M");
+    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M");
   }
+
   // Switch orientation of 90-degree folds when an outside mountain runs over them.
-  else if(countM90 === 1 && cornerFoldCount === 2 && color === "M" && count === 1 && oppCount === 1) {
+  else if(grid.creaseExists(new Crease(new Point(x,y), new Point(x + xInc, y + yInc), "M90")) && color === "M") {
     grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");
   }
-  else if(countV90 === 1 && cornerFoldCount === 2 && color === "M" && count === 1 && oppCount === 1) {
+
+  else if(grid.creaseExists(new Crease(new Point(x,y), new Point(x + xInc, y + yInc), "V90")) && color === "M") {
     grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
   }
 
-
-  else if(countV90 === 2 && color === "M" && count === 2) {
-    grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90")
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
-  }
-
-  else if(countM90 === 2 && color === "M" && count === 3) {
-  console.log("Hello");
-    grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");
-  }
-  else if(countV90 === 1 && color === "M" && count === 3) {
-    grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
-  }
   // Ensures that junctions have three creases of the same color and one crease of a different color
   else if(count === 1 && oppCount === 2) {
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), oppColor(color));
@@ -623,6 +620,11 @@ function chooseCrease(grid, color, x, y, xInc, yInc) {
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), oppColor(color));
   }
   
+  // Last check: if outside mountain is entering another corner, stop outside mountain.
+  else if(color === "M" && countM90 === 1 && countCreaseByColor(grid, new Point(x + 2*xInc, y+2*yInc), "C") === 2) {
+    return -1;
+  }
+
   // Else, draw normal crease
   else {
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), color);
