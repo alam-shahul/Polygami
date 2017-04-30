@@ -63,6 +63,10 @@ $(document).ready(function() {
     }
   });
 
+  $('#optimize-crease-pattern').click(function() {
+    // TODO: Run crease pattern optimization.
+  });
+
   $('#color-scheme-mv').click(function() {
     if (!($(this).hasClass('active'))) {
       colorSchemeExtended = false;
