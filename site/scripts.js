@@ -43,8 +43,10 @@ $(document).ready(function() {
       $('.input-mode-picker').removeClass('active');
       $(this).addClass('active');
       $('#grid').show();
+      $('.controls-2d').show();
       $('#input-3d').hide();
-      // TODO: Update output
+      $('#input-title').text('Pixel Input');
+      updateOutput();
     }
   });
 
@@ -54,8 +56,10 @@ $(document).ready(function() {
       $('.input-mode-picker').removeClass('active');
       $(this).addClass('active');
       $('#grid').hide();
+      $('.controls-2d').hide();
       $('#input-3d').show();
-      // TODO: Update output
+      $('#input-title').text('Voxel Input');
+      updateOutput();
     }
   });
 
@@ -106,16 +110,55 @@ function updateOutput() {
   updateViewer(creaseGrid(computeCorners(parseGrid())));
 };
 
-// Parses the pixel input into a 2D array
+// Parses the pixel input into a 2D array or the 3D input into a 3D array
 function parseGrid() {
   var grid = [];
-  for (var x = 0; x < width; x++) {
-    grid.push([]);
-    for (var y = 0; y < height; y++) {
-      if ($('#' + x + '-' + y).hasClass('filled')) {
-        grid[x].push(1);
-      } else {
-        grid[x].push(0);
+  // if (inputMode3D) {
+  // TODO: Enable 3D input when the corner computation can accept 3D inputs
+  if (false) {
+    var i, inGrid;
+    // Determine the smallest 3D array size necessary to fit the drawn voxels
+    var voxX = [], voxY = [], voxZ = [];
+    for (i = 0; i < voxels.length; i++) {
+      voxX.push(voxels[i][0]);
+      voxY.push(voxels[i][1]);
+      voxZ.push(voxels[i][2]);
+    }
+    // Shift the voxels towards the origin as much as possible
+    var minX = Math.min(...voxX), minY = Math.min(...voxY), minZ = Math.min(...voxZ);
+    for (i = 0; i < voxels.length; i++) {
+      voxX[i] -= minX;
+      voxY[i] -= minY;
+      voxZ[i] -= minZ;
+    }
+    for (var x = 0; x <= Math.max(...voxX); x++) {
+      grid.push([]);
+      for (var y = 0; y <= Math.max(...voxY); y++) {
+        grid[x].push([]);
+        for (var z = 0; z <= Math.max(...voxZ); z++) {
+          inGrid = false;
+          for (i = 0; i < voxels.length; i++) {
+            if (x === voxX[i] && y === voxY[i] && z === voxZ[i]) {
+              inGrid = true;
+            }
+          }
+          if (inGrid) {
+            grid[x][y].push(1);
+          } else {
+            grid[x][y].push(0);
+          }
+        }
+      }
+    }
+  } else {
+    for (var x = 0; x < width; x++) {
+      grid.push([]);
+      for (var y = 0; y < height; y++) {
+        if ($('#' + x + '-' + y).hasClass('filled')) {
+          grid[x].push(1);
+        } else {
+          grid[x].push(0);
+        }
       }
     }
   }

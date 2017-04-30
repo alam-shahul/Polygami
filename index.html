@@ -27,23 +27,25 @@
   <body>
     <div class="container-fluid">
       <div class="col-md-6 left-col">
-        <h1>Pixel Input</h1>
+        <h1 id="input-title">Voxel Input</h1>
         <form class="form-inline">
           <div class="row">
             <div class="col-sm-9">
               <div class="form-group">
-                <label for="width">Width:</label>
-                <input type="number" class="form-control grid-size-input" id="width" value="10">
-                <label for="height">Height:</label>
-                <input type="number" class="form-control grid-size-input" id="height" value="10">
-                <button type="button" class="btn btn-info" id="update-grid-size">Update Grid Size</button>
-                <div class="btn-group" role="group">
+                <div class="btn-group margin-right" role="group">
                   <button type="button" class="btn btn-default input-mode-picker" id="input-mode-2d">2D Input</button>
                   <button type="button" class="btn btn-default input-mode-picker active" id="input-mode-3d">3D Input</button>
                 </div>
+                <span class="controls-2d" style="display: none">
+                  <label for="width">Width:</label>
+                  <input type="number" class="form-control grid-size-input" id="width" value="10">
+                  <label for="height">Height:</label>
+                  <input type="number" class="form-control grid-size-input" id="height" value="10">
+                  <button type="button" class="btn btn-info" id="update-grid-size">Update Grid Size</button>
+                </span>
               </div>
             </div>
-            <div class="col-sm-3 text-right">
+            <div class="col-sm-3 text-right controls-2d" style="display: none">
               <button type="button" class="btn btn-danger" id="clear-grid">Clear Grid</button>
             </div>
           </div>

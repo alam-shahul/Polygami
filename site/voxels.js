@@ -7,7 +7,7 @@ var container, interval,
 	ray, brush, objectHovered,
 	mouse3D, isMouseDown = false, onMouseDownPosition,
 	radious = 1600, theta = 45, onMouseDownTheta = 45, phi = 60, onMouseDownPhi = 60,
-	isShiftDown = false;
+	isShiftDown = false, voxels = [];
 
 init();
 render();
@@ -21,7 +21,7 @@ function init() {
 	info.style.top = '5px';
 	info.style.width = '100%';
 	info.style.textAlign = 'center';
-	info.innerHTML = '<span style="color: #444; background-color: #fff; border-bottom: 1px solid #ddd; padding: 8px 10px; text-transform: uppercase;"><a href="http://mrdoob.com/projects/voxels" target="blank_">attr</a> | <strong>0 - 9</strong>: colors, <strong>click</strong>: add voxel, <strong>shift + click</strong>: remove voxel, <strong>drag</strong>: rotate | <a id="link" href="" target="_blank">share</a> <a href="javascript:save();">save</a> <a href="javascript:clear();">clear</a></span>';
+	info.innerHTML = '<span style="color: #444; background-color: #fff; border-bottom: 1px solid #ddd; padding: 8px 10px; text-transform: uppercase;"><a href="http://mrdoob.com/projects/voxels" target="blank_">attr</a> | <strong>0 - 9</strong>: colors, <strong>click</strong>: add voxel, <strong>shift + click</strong>: remove voxel, <strong>drag</strong>: rotate | <a href="javascript:save();">save</a> <a href="javascript:clear();">clear</a></span>';
 	container.appendChild( info );
 
 	camera = new THREE.Camera( 40, container.clientWidth / container.clientHeight, 1, 10000 );
@@ -226,6 +226,7 @@ function onMouseUp( event ) {
 				if ( intersect.object != plane ) {
 
 					scene.removeObject( intersect.object );
+					removeVoxel(intersect.object.position.x, intersect.object.position.y, intersect.object.position.z);
 
 				}
 
@@ -241,6 +242,7 @@ function onMouseUp( event ) {
 				voxel.position.z = Math.floor( position.z / 50 ) * 50 + 25;
 				voxel.overdraw = true;
 				scene.addObject( voxel );
+				recordVoxel(position.x, position.y, position.z);
 
 			}
 
@@ -306,6 +308,7 @@ function buildFromHash() {
 				voxel.position.z = current.z * 50 + 25;
 				voxel.overdraw = true;
 				scene.addObject( voxel );
+				recordVoxel(voxel.position.x, voxel.position.y, voxel.position.z);
 
 			}
 		}
@@ -316,12 +319,15 @@ function buildFromHash() {
 
 		for ( var i = 0; i < data.length; i += 4 ) {
 
-			var voxel = new THREE.Mesh( cube, new THREE.MeshColorFillMaterial( colors[ data[ i + 3 ] ] ) );
+			// var voxel = new THREE.Mesh( cube, new THREE.MeshColorFillMaterial( colors[ data[ i + 3 ] ] ) );
+			// Draw wireframes
+			var voxel = new THREE.Mesh( cube, new THREE.MeshColorFillMaterial( colors[ data[ i + 3 ] ], 1, 0x000000 ) );
 			voxel.position.x = ( data[ i ] - 20 ) * 25;
 			voxel.position.y = ( data[ i + 1 ] + 1 ) * 25;
 			voxel.position.z = ( data[ i + 2 ] - 20 ) * 25;
 			voxel.overdraw = true;
 			scene.addObject( voxel );
+			recordVoxel(voxel.position.x, voxel.position.y, voxel.position.z);
 
 		}
 
@@ -394,8 +400,6 @@ function updateHash() {
 
 	data = encode( data );
 	window.location.hash = "A/" + data;
-	// TODO/link: Remove this?
-	document.getElementById( 'link' ).href = "http://mrdoob.com/projects/voxels/#A/" + data;
 
 }
 
@@ -509,6 +513,7 @@ function clear() {
 		if ( object instanceof THREE.Mesh && object !== plane && object !== brush ) {
 
 			scene.removeObject( object );
+			removeVoxel(object.position.x, object.position.y, object.position.z);
 			continue;
 		}
 
@@ -536,4 +541,28 @@ function encode( array ) {
 	array.forEach( function ( v ) { output += "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt( v ); } );
 	return output;
 
+}
+
+function arraysEqual(a, b) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length != b.length) return false;
+
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
+// Takes in input in three.js coordinates and converts them to the grid we expect
+function convertCoordsToGrid( x, y, z ) {
+	return [Math.floor(x / 50) + 10, -Math.floor(z / 50) + 9, Math.floor(y / 50)];
+}
+
+function recordVoxel( x, y, z ) {
+	voxels.push(convertCoordsToGrid(x, y, z));
+}
+
+function removeVoxel( x, y, z ) {
+	voxels = voxels.filter(function(voxel) { return !arraysEqual(voxel, convertCoordsToGrid(x, y, z)); });
 }
