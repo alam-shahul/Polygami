@@ -482,9 +482,6 @@ function creaseGrid(grid) {
 //    }
 // End of loop for Corners of certain priority
   }
-  console.log(grid.creases[Point.toString(1.5,5)]);
-  grid.deleteCrease(new Point(1.5,5), new Point(2,5), "M90");
-  console.log(grid.creases[Point.toString(1.5,5)]);
   return grid;
 }
 
