@@ -612,8 +612,7 @@ function chooseCrease(grid, color, x, y, xInc, yInc) {
   }
   // Delete superfluous outside mountain folds
   else if(grid.creaseExists(new Crease(new Point(x,y), new Point(x + xInc, y + yInc), "M")) && color === "M") {
-    grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M");
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M");
+    return -1;
   }
 
   // Ensures that junctions have three creases of the same color and one crease of a different color
