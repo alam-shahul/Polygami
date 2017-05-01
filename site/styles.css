@@ -28,3 +28,23 @@
 #grid td:hover {
   background-color: lightgray;
 }
+
+#input-3d {
+  position: absolute;
+  width: 90%;
+  height: 600px;
+  font-family: Monospace;
+  font-size: 12px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+.margin-right {
+  margin-right: 10px;
+}
+
+.controls-viewer {
+  margin: 10px 0;
+}
