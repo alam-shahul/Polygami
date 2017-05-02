@@ -37,6 +37,10 @@ $(document).ready(function() {
     updateOutput();
   });
 
+  $('#generate-crease-pattern').click(function() {
+    updateOutput();
+  });
+
   $('#input-mode-2d').click(function() {
     if (!($(this).hasClass('active'))) {
       inputMode3D = false;
@@ -44,7 +48,8 @@ $(document).ready(function() {
       $(this).addClass('active');
       $('#grid').show();
       $('.controls-2d').show();
-      $('#input-3d').hide();
+      $('.controls-3d').hide();
+      $('#input-3d').empty();
       $('#input-title').text('Pixel Input');
       updateOutput();
     }
@@ -57,14 +62,11 @@ $(document).ready(function() {
       $(this).addClass('active');
       $('#grid').hide();
       $('.controls-2d').hide();
-      $('#input-3d').show();
+      $('.controls-3d').show();
+      init();
       $('#input-title').text('Voxel Input');
       updateOutput();
     }
-  });
-
-  $('#optimize-crease-pattern').click(function() {
-    // TODO: Run crease pattern optimization.
   });
 
   $('#color-scheme-mv').click(function() {
@@ -117,9 +119,12 @@ function updateOutput() {
 // Parses the pixel input into a 2D array or the 3D input into a 3D array
 function parseGrid() {
   var grid = [];
-  // if (inputMode3D) {
-  // TODO: Enable 3D input when the corner computation can accept 3D inputs
-  if (false) {
+  if (inputMode3D) {
+    // Handle empty grid
+    if (!voxels.length) {
+      return [[0]];
+    }
+
     var i, inGrid;
     // Determine the smallest 3D array size necessary to fit the drawn voxels
     var voxX = [], voxY = [], voxZ = [];
@@ -128,29 +133,49 @@ function parseGrid() {
       voxY.push(voxels[i][1]);
       voxZ.push(voxels[i][2]);
     }
-    // Shift the voxels towards the origin as much as possible
-    var minX = Math.min(...voxX), minY = Math.min(...voxY), minZ = Math.min(...voxZ);
+    // Shift the voxels towards the origin as much as possible, leaving a size 1 border in the xy plane
+    var minX = Math.min(...voxX) - 1, minY = Math.min(...voxY) - 1, minZ = Math.min(...voxZ);
     for (i = 0; i < voxels.length; i++) {
       voxX[i] -= minX;
       voxY[i] -= minY;
       voxZ[i] -= minZ;
     }
-    for (var x = 0; x <= Math.max(...voxX); x++) {
+
+    // for (var x = 0; x <= Math.max(...voxX) + 1; x++) {
+    //   grid.push([]);
+    //   for (var y = 0; y <= Math.max(...voxY) + 1; y++) {
+    //     grid[x].push([]);
+    //     for (var z = 0; z <= Math.max(...voxZ); z++) {
+    //       inGrid = false;
+    //       for (i = 0; i < voxels.length; i++) {
+    //         if (x === voxX[i] && y === voxY[i] && z === voxZ[i]) {
+    //           inGrid = true;
+    //         }
+    //       }
+    //       if (inGrid) {
+    //         grid[x][y].push(1);
+    //       } else {
+    //         grid[x][y].push(0);
+    //       }
+    //     }
+    //   }
+    // }
+
+    // TODO: This currently returns just the slice of the input at z = 0,
+    // make corner computation accept 3D inputs (use commented out section above)
+    for (var x = 0; x <= Math.max(...voxX) + 1; x++) {
       grid.push([]);
-      for (var y = 0; y <= Math.max(...voxY); y++) {
-        grid[x].push([]);
-        for (var z = 0; z <= Math.max(...voxZ); z++) {
-          inGrid = false;
-          for (i = 0; i < voxels.length; i++) {
-            if (x === voxX[i] && y === voxY[i] && z === voxZ[i]) {
-              inGrid = true;
-            }
+      for (var y = 0; y <= Math.max(...voxY) + 1; y++) {
+        inGrid = false;
+        for (i = 0; i < voxels.length; i++) {
+          if (x === voxX[i] && y === voxY[i] && 0 === voxZ[i]) {
+            inGrid = true;
           }
-          if (inGrid) {
-            grid[x][y].push(1);
-          } else {
-            grid[x][y].push(0);
-          }
+        }
+        if (inGrid) {
+          grid[x].push(1);
+        } else {
+          grid[x].push(0);
         }
       }
     }
