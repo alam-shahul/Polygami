@@ -9,23 +9,8 @@ function creaseGrid(grid) {
   var currentX;
   var currentY;
 
-  // Go through corners in priority order
-//  for(var currPriority = 1; currPriority <= grid.corners.length/4; currPriority ++) {
-//    // Make dictionary of Corners with priority = currPriority
-//    var currCorners = {}
-//    for(var j in grid.corners) {
-//      if(j.priority === currPriority) {
-//        currCorners[Point.toString(j.tip.x, j.tip.y)] = j;
-//      }
-//    }
-    
-//    // Iterate through Corners of priority = currPriority
-//    for(var i = 0; i < currCorners.length; i++) {
-//      corner = currCorners[i];
 
-    //console.log(grid.corners);
-
-    for(var i in grid.corners) {
+ for(var i in grid.corners) {
       corner = grid.corners[i];
 
       if (corner.direction === 0) {
@@ -63,10 +48,23 @@ function creaseGrid(grid) {
     }
 
 
-    for(var i in grid.corners) {
+  // Go through corners in priority order
+
+  function draw() {
+  for(var currPriority = Object.keys(grid.corners).length/2; currPriority >0; currPriority --) {
+    // Make dictionary of Corners with priority = currPriority
+    var currCorners = {}
+    for(var j in grid.corners) {
+      if(grid.corners[j].priority === currPriority) {
+        currCorners[Point.toString(grid.corners[j].tip.x, grid.corners[j].tip.y)] = grid.corners[j];
+      }
+    }
+    
+    // Iterate through Corners of priority = currPriority
+    for(var i in currCorners) {
       
 
-      corner = grid.corners[i];
+      corner = currCorners[i];
 
 
       
@@ -166,7 +164,7 @@ function creaseGrid(grid) {
         }
       }
 
-      // Draw inside valleys and corner folds
+      // Draw inside valleys
       if (corner.direction === 0) {
 
         currentX = corner.tip.x - 0.5;
@@ -478,9 +476,242 @@ function creaseGrid(grid) {
       }
 
 
-//    }
+    }
 // End of loop for Corners of certain priority
   }
+  }
+// End of draw() definition
+  function delete90DegreeFolds() {
+  for(var currPriority = Object.keys(grid.corners).length/2; currPriority >0; currPriority --) {
+    // Make dictionary of Corners with priority = currPriority
+    var currCorners = {}
+    for(var j in grid.corners) {
+      if(grid.corners[j].priority === currPriority) {
+        currCorners[Point.toString(grid.corners[j].tip.x, grid.corners[j].tip.y)] = grid.corners[j];
+      }
+    }
+    
+    // Iterate through Corners of priority = currPriority
+    for(var i in currCorners) {
+      corner = currCorners[i];
+      // Draw tip-to-tip creases
+      if (corner.direction === 0) {
+        currentX = corner.tip.x;
+        currentY = corner.tip.y;
+        
+        while(currentY % grid.h !== 0) {
+          var newCoords = tipToTipDeleteCrease(grid, currentX, currentY, 0, 0.5);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+
+        currentX = corner.tip.x;
+        currentY = corner.tip.y;
+        
+        while(currentX % grid.w !== 0) {
+          var newCoords = tipToTipDeleteCrease(grid, currentX, currentY, 0.5, 0);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+      }
+
+      else if (corner.direction === 1) {
+        currentX = corner.tip.x;
+        currentY = corner.tip.y;
+        
+        while(currentY % grid.h !== 0) {
+          var newCoords = tipToTipDeleteCrease(grid, currentX, currentY, 0, 0.5);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+
+        currentX = corner.tip.x;
+        currentY = corner.tip.y;
+        
+        while(currentX % grid.w !== 0) {
+          var newCoords = tipToTipDeleteCrease(grid, currentX, currentY, -0.5, 0);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+      }
+
+      else if (corner.direction === 2) {
+        currentX = corner.tip.x;
+        currentY = corner.tip.y;
+        
+        while(currentY % grid.h !== 0) {
+          var newCoords = tipToTipDeleteCrease(grid, currentX, currentY, 0, -0.5);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+
+        currentX = corner.tip.x;
+        currentY = corner.tip.y;
+        
+        while(currentX % grid.w !== 0) {
+          var newCoords = tipToTipDeleteCrease(grid, currentX, currentY, 0.5, 0);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+      }
+
+      else if (corner.direction === 3) {
+        currentX = corner.tip.x;
+        currentY = corner.tip.y;
+        
+        while(currentY % grid.h !== 0) {
+          var newCoords = tipToTipDeleteCrease(grid, currentX, currentY, 0, -0.5);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+
+        currentX = corner.tip.x;
+        currentY = corner.tip.y;
+        
+        while(currentX % grid.w !== 0) {
+          var newCoords = tipToTipDeleteCrease(grid, currentX, currentY, -0.5, 0);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+      }
+
+      // Draw creases between sides of corners
+      if (corner.direction === 0) {
+        currentX = corner.tip.x - 1;
+        currentY = corner.tip.y;
+        
+        while(currentY % grid.h !== 0) {
+          var newCoords = sidesOfCornersDeleteCrease(grid, currentX, currentY, 0, 0.5);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+
+        currentX = corner.tip.x;
+        currentY = corner.tip.y - 1;
+        
+        while(currentX % grid.w !== 0) {
+          var newCoords = sidesOfCornersDeleteCrease(grid, currentX, currentY, 0.5, 0);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+      }
+
+      else if (corner.direction === 1) {
+        currentX = corner.tip.x + 1;
+        currentY = corner.tip.y;
+        
+        while(currentY % grid.h !== 0) {
+          var newCoords = sidesOfCornersDeleteCrease(grid, currentX, currentY, 0, 0.5);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+
+        currentX = corner.tip.x;
+        currentY = corner.tip.y - 1;
+        
+        while(currentX % grid.w !== 0) {
+          var newCoords = sidesOfCornersDeleteCrease(grid, currentX, currentY, -0.5, 0);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+      }
+
+      else if (corner.direction === 2) {
+        currentX = corner.tip.x - 1;
+        currentY = corner.tip.y;
+        
+        while(currentY % grid.h !== 0) {
+          var newCoords = sidesOfCornersDeleteCrease(grid, currentX, currentY, 0, -0.5);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+
+        currentX = corner.tip.x;
+        currentY = corner.tip.y + 1;
+        
+        while(currentX % grid.w !== 0) {
+          var newCoords = sidesOfCornersDeleteCrease(grid, currentX, currentY, 0.5, 0);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+      }
+
+      else if (corner.direction === 3) {
+        currentX = corner.tip.x + 1;
+        currentY = corner.tip.y;
+        
+        while(currentY % grid.h !== 0) {
+          var newCoords = sidesOfCornersDeleteCrease(grid, currentX, currentY, 0, -0.5);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+
+        currentX = corner.tip.x;
+        currentY = corner.tip.y + 1;
+        
+        while(currentX % grid.w !== 0) {
+          var newCoords = sidesOfCornersDeleteCrease(grid, currentX, currentY, -0.5, 0);
+          if(newCoords === -1) {
+            break;
+          }
+          currentX = newCoords[0];
+          currentY = newCoords[1];
+        }
+      }
+
+    }
+  }  
+  }
+
+  draw();
+  delete90DegreeFolds();
+  draw();
+
   return grid;
 }
 
@@ -500,6 +731,55 @@ function countCreaseByColor(grid, point, color) {
   return count;
 }
 
+// Helper function to delete creases between sides of corners
+function sidesOfCornersDeleteCrease(grid, x, y, xInc, yInc) {
+  var countM = countCreaseByColor(grid, new Point(x, y), "M");
+  var countV = countCreaseByColor(grid, new Point(x, y), "V");
+  var cornerFoldCount = countCreaseByColor(grid, new Point(x, y), "C");
+  var countM90 = countCreaseByColor(grid, new Point(x, y), "M90");
+  var countV90 = countCreaseByColor(grid, new Point(x, y), "V90");
+
+  // Used for testing whether extruded face has been reached
+  var countMAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "M");
+  var countVAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "V");
+
+  if(!(grid.creaseExists(new Crease(new Point(x,y), new Point(x - xInc, y - yInc), "M90")))) {
+    return -1;
+  }
+  else {
+    grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
+    grid.deleteCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");
+  }
+  
+
+  x += xInc;
+  y += yInc;
+  
+  return [x, y];
+}
+
+// Helper function to delete creases between tips of two corners
+function tipToTipDeleteCrease(grid, x, y, xInc, yInc) {
+  var countM = countCreaseByColor(grid, new Point(x, y), "M");
+  var countV = countCreaseByColor(grid, new Point(x, y), "V");
+  var cornerFoldCount = countCreaseByColor(grid, new Point(x, y), "C");
+  var countM90 = countCreaseByColor(grid, new Point(x, y), "M90");
+  var countV90 = countCreaseByColor(grid, new Point(x, y), "V90");
+
+  // Used for testing whether extruded face has been reached
+  var countMAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "M");
+  var countVAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "V");
+
+  if(!(grid.creaseExists(new Crease(new Point(x,y), new Point(x - xInc, y - yInc), "M90")))) {
+    return -1;
+  }
+
+  x += xInc;
+  y += yInc;
+  
+  return [x, y];
+}
+
 // Helper function to draw between sides of corners
 function sidesOfCornersChooseCrease(grid, x, y, xInc, yInc) {
   var countM = countCreaseByColor(grid, new Point(x, y), "M");
@@ -511,26 +791,26 @@ function sidesOfCornersChooseCrease(grid, x, y, xInc, yInc) {
   // Used for testing whether extruded face has been reached
   var countMAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "M");
   var countVAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "V");
- // var countMTwoAhead = countCreaseByColor(grid, new Point(x + 3*xInc, y + 3*yInc), "M");
- // var countVTwoAhead = countCreaseByColor(grid, new Point(x + 3*xInc, y + 3*yInc), "V");
 
-  if(countMAhead === 0 && countVAhead === 0) {
-    if(countM90 === 1 && countV90 === 1) {
-      return -1
-    }
+  if(countM90 === 1 && countV90 === 1 && cornerFoldCount === 2) {
+    return -1;
+  }
+  else if(countM90 === 1 && countV90 === 1 && (countCreaseByColor(grid, new Point(x + xInc, y + yInc), "C") === 2) || (countCreaseByColor(grid, new Point(x + xInc, y + yInc), "C") === 4)) {
+    return -1;
+  }
+  
+
+  else if(countVAhead === 2 && countM === 2) {
+      grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");    
+  }
+  else if(countMAhead === 2 && countV === 2) {
+      grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90"); 
+  }
+  else if(countMAhead === 0 && countVAhead === 0) {
     grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");    
-    grid.addCrease(new Point(x + xInc, y + yInc), new Point(x + 2*xInc, y + 2*yInc), "V90");
- //   if(!(countMTwoAhead === 0 && countVTwoAhead === 0)) {
-      return -1;
- //   }
-  }
-  else if(countM90 === 1 && countM === 2 && countV90 === 0) {
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");
-  }
-  else if(countV90 === 1 && countV === 2) {
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");    
   }
   else {
+    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90"); 
   }
 
   x += xInc;
@@ -551,24 +831,25 @@ function tipToTipChooseCrease(grid, x, y, xInc, yInc) {
   var countMAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "M");
   var countVAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "V");
 
-  if(countMAhead === 0 && countVAhead === 0) {
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");    
-    grid.addCrease(new Point(x + xInc, y+yInc), new Point(x + 2*xInc, y + 2*yInc), "M90");
+  if(cornerFoldCount === 2 && (grid.creaseExists(new Crease(new Point(x,y), new Point(x - xInc, y - yInc), "M90")))) {
+    console.log("Why");
     return -1;
   }
-  
-  
-  else if(cornerFoldCount === 2 && countM === 2 && countV90 === 0) {
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");
+  else if(countM90 === 1 && countV90 === 1) {
+    return -1;
   }
-  else if(countM90 === 1 && countV === 2) {
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");    
+
+  else if(countVAhead === 2 && countM === 2) {
+      grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90");    
   }
-  
-  else if(countV90 === 1 && countM === 2){
-    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");   
+  else if(countMAhead === 2 && countV === 2) {
+      grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "V90"); 
+  }
+  else if(countMAhead === 0 && countVAhead === 0) {
+    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90");    
   }
   else {
+    grid.addCrease(new Point(x, y), new Point(x + xInc, y + yInc), "M90"); 
   }
 
   x += xInc;

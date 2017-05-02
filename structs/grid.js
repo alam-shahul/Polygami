@@ -68,16 +68,14 @@ class Grid {
   addCrease(p1, p2, color) {
     var crease = new Crease(p1, p2, color);
     if (this.creaseExists(crease)) {
-      // The Crease already exists in the Grid, we return null
-      return null;
-    } else {
+      this.deleteCrease(p1, p2, color);
+    }
       // We add the Crease to our set of creases
       
-      this.creases[Point.toString(p1.x, p1.y)].push(crease);
-      this.creases[Point.toString(p2.x, p2.y)].push(crease);
-      this.creaseSet.add(crease);
-      return crease;
-    }
+    this.creases[Point.toString(p1.x, p1.y)].push(crease);
+    this.creases[Point.toString(p2.x, p2.y)].push(crease);
+    this.creaseSet.add(crease);
+    return crease;
   }
   
   // Delete Crease between certain points of a certain color
