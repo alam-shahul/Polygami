@@ -1,3 +1,5 @@
+var test;
+
 // A Grid provides a coordinate system and access to elements on the paper.
 class Grid {
   constructor(w, h) {
@@ -89,14 +91,19 @@ class Grid {
         console.log("hurray");
         if((this.creases[Point.toString(p1.x, p1.y)][i]).equals(crease)) {
           console.log("wow");
+          console.log(this.creases[Point.toString(p1.x, p1.y)]);
           this.creases[Point.toString(p1.x, p1.y)].splice(i, 1);
+          console.log(this.creases[Point.toString(p1.x, p1.y)]);
         }
       }
       console.log("lol");
       for(var j = 0; j < this.creases[Point.toString(p2.x, p2.y)].length; j++) {
         if((this.creases[Point.toString(p2.x, p2.y)][j]).equals(crease)) {
           console.log("amazing");
+          console.log(JSON.stringify(this.creases[Point.toString(p2.x, p2.y)]));
           this.creases[Point.toString(p2.x, p2.y)].splice(j, 1);
+test = this.creases[Point.toString(p2.x, p2.y)];
+          console.log(JSON.stringify(this.creases[Point.toString(p2.x, p2.y)]));
         }
       }
     }
