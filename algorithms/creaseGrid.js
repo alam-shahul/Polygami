@@ -709,6 +709,7 @@ function creaseGrid(grid) {
   }
 
   draw();
+  // Note: delete90DegreeFolds doesn't work, which is a major issue.
   delete90DegreeFolds();
   draw();
 
