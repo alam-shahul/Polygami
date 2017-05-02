@@ -37,7 +37,11 @@ $(document).ready(function() {
     updateOutput();
   });
 
-  $('#generate-crease-pattern').click(function() {
+  $('#generate-crease-pattern, #color-faces').click(function() {
+    updateOutput();
+  });
+
+  $('#face-color').change(function() {
     updateOutput();
   });
 
@@ -50,6 +54,7 @@ $(document).ready(function() {
       $('.controls-2d').show();
       $('.controls-3d').hide();
       $('#input-3d').empty();
+      $('#input-3d').hide();
       $('#input-title').text('Pixel Input');
       updateOutput();
     }
@@ -61,9 +66,11 @@ $(document).ready(function() {
       $('.input-mode-picker').removeClass('active');
       $(this).addClass('active');
       $('#grid').hide();
+      $('#input-3d').show();
       $('.controls-2d').hide();
       $('.controls-3d').show();
       init();
+      render();
       $('#input-title').text('Voxel Input');
       updateOutput();
     }
@@ -208,6 +215,65 @@ function updateViewer(grid) {
 
   // Draw paper
   draw.rect(grid.w * scale, grid.h * scale).attr({ fill: '#fff' }).stroke({ width: 3 });
+
+  // Color extruded pixels
+  // TODO: Figure out a better way to color pixel sides;
+  // right now the strategy is to find pixels in between orange and green strokes, which colors too many pixels
+  if ($('#color-faces').is(':checked')) {
+    for (var pixel in grid.extruded) {
+      if (grid.extruded.hasOwnProperty(pixel)) {
+        pixel = grid.extruded[pixel];
+        draw.rect(scale, scale).fill($('#face-color').val()).move(pixel.x * scale, (grid.h - pixel.y - 1) * scale);
+      }
+    }
+
+    // Color extruded pixel sides
+    grid.creaseSet.forEach(function(crease) {
+      if (crease.color === 'V90') {
+        // TODO: Ignoring doubly-drawn creases for now; this needs to be fixed in crease generation
+        var dups = [];
+        var array = grid.creases[Point.toString(crease.endpoints[0].x, crease.endpoints[0].y)];
+        var i;
+        for (i = 0; i < array.length; i++) {
+          if (array[i].equalsColorBlind(crease)) {
+            dups.push(array[i]);
+          }
+        }
+        array = grid.creases[Point.toString(crease.endpoints[1].x, crease.endpoints[1].y)];
+        for (i = 0; i < array.length; i++) {
+          if (array[i].equalsColorBlind(crease)) {
+            dups.push(array[i]);
+          }
+        }
+        if (dups.length > 2) {
+          // There's a doubly-drawn crease; skip
+          return;
+        }
+
+        if (crease.endpoints[0].y === crease.endpoints[1].y) {
+          // If this is a left-to-right stroke, check above and below
+          if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x, crease.endpoints[0].y + 1), grid.point(crease.endpoints[1].x, crease.endpoints[1].y + 1), 'M90'))) {
+            // Color the pixel above
+            draw.rect(scale / 2, scale).fill($('#face-color').val()).move(Math.min(crease.endpoints[0].x, crease.endpoints[1].x) * scale, (grid.h - crease.endpoints[0].y - 1) * scale);
+          }
+          if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x, crease.endpoints[0].y - 1), grid.point(crease.endpoints[1].x, crease.endpoints[1].y - 1), 'M90'))) {
+            // Color the pixel below
+            draw.rect(scale / 2, scale).fill($('#face-color').val()).move(Math.min(crease.endpoints[0].x, crease.endpoints[1].x) * scale, (grid.h - crease.endpoints[0].y) * scale);
+          }
+        } else {
+          // If this is an up-to-down stroke, check left and right
+          if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x - 1, crease.endpoints[0].y), grid.point(crease.endpoints[1].x - 1, crease.endpoints[1].y), 'M90'))) {
+            // Color the pixel to the left
+            draw.rect(scale, scale / 2).fill($('#face-color').val()).move((crease.endpoints[0].x - 1) * scale, (grid.h - Math.max(crease.endpoints[0].y, crease.endpoints[1].y)) * scale);
+          }
+          if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x + 1, crease.endpoints[0].y), grid.point(crease.endpoints[1].x + 1, crease.endpoints[1].y), 'M90'))) {
+            // Color the pixel below
+            draw.rect(scale, scale / 2).fill($('#face-color').val()).move(crease.endpoints[0].x * scale, (grid.h - Math.max(crease.endpoints[0].y, crease.endpoints[1].y)) * scale);
+          }
+        }
+      }
+    });
+  }
 
   // Draw creases
   grid.creaseSet.forEach(function(crease) {

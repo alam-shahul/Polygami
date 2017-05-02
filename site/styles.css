@@ -41,10 +41,19 @@
   overflow: hidden;
 }
 
+.margin-left {
+  margin-left: 10px;
+}
+
 .margin-right {
   margin-right: 10px;
 }
 
 .controls-viewer {
   margin: 10px 0;
+}
+
+#face-color {
+  width: 40px;
+  padding: 2px;
 }

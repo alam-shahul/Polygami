@@ -60,11 +60,22 @@
       <div class="col-md-6 right-col">
         <h1>Crease Pattern</h1>
         <div class="controls-viewer">
-          <a id="export-svg" href-lang="image/svg+xml" href="" download><button type="button" class="btn btn-info">Export to SVG</button></a>
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default color-scheme-picker" id="color-scheme-mv">MV Colors</button>
-            <button type="button" class="btn btn-default color-scheme-picker active" id="color-scheme-extended">Extended Colors</button>
-          </div>
+          <form class="form-inline">
+            <a id="export-svg" href-lang="image/svg+xml" href="" download><button type="button" class="btn btn-info">Export to SVG</button></a>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default color-scheme-picker" id="color-scheme-mv">MV Colors</button>
+              <button type="button" class="btn btn-default color-scheme-picker active" id="color-scheme-extended">Extended Colors</button>
+            </div>
+            <span class="margin-left">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="color-faces" checked>
+                  Color extruded faces:
+                </label>
+              </div>
+              <input class="form-control" type="color" value="#ff0000" id="face-color">
+            </span>
+          </form>
         </div>
         <hr>
         <div id="viewer"></div>

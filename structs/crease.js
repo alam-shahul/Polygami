@@ -13,8 +13,24 @@ class Crease {
       return false;
     }
     // The Crease equality operator considers color
+    if (this.color !== obj.color) {
+      return false;
+    }
     for (var i = 0; i < this.endpoints.length; i++) {
-      if (!(this.includes(obj.endpoints, this.endpoints[i])) || !(this.color === obj.color)) {
+      if (!(this.includes(obj.endpoints, this.endpoints[i]))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  equalsColorBlind(obj) {
+    if (typeof obj !== typeof this) {
+      return false;
+    }
+    // The Crease equality operator considers color
+    for (var i = 0; i < this.endpoints.length; i++) {
+      if (!(this.includes(obj.endpoints, this.endpoints[i]))) {
         return false;
       }
     }
