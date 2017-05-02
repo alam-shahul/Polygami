@@ -7,7 +7,7 @@ function len(x) {return x.length;}
 function computeCorners(pixelMatrix) {
     var N = len(pixelMatrix);
     var M = len(pixelMatrix[0]);
-    console.log(N, M);
+    // console.log(N, M);
 
     var deepCopy = [];
     for(var i = 0; i < N; i++) {
@@ -150,7 +150,7 @@ function computeCorners(pixelMatrix) {
         }
     }
 
-    console.log(corner);
+    // console.log(corner);
     return grid;
 }
 
@@ -176,9 +176,6 @@ function computeFaceShare(pixelMatrix) {
     while(rows.push(0) <= N);
     var columns = [];
     while(columns.push(0) <= M);
-
-    console.log(rows);
-    console.log(columns);
 
     var order = 2;
 
@@ -273,9 +270,9 @@ function computeFaceShare(pixelMatrix) {
         order += 1;
     }
 
-    console.log(result);
-    console.log(rows);
-    console.log(columns);
+    // console.log(result);
+    // console.log(rows);
+    // console.log(columns);
 
     return [result, rows, columns];
 }
