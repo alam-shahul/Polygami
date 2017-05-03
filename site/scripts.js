@@ -316,24 +316,30 @@ function updateViewer(grid) {
         }
 
         if (crease.endpoints[0].y === crease.endpoints[1].y) {
-          // If this is a left-to-right stroke, check above and below
-          if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x, crease.endpoints[0].y + 1), grid.point(crease.endpoints[1].x, crease.endpoints[1].y + 1), 'M90'))) {
-            // Color the pixel above
-            draw.rect(scale / 2, scale).fill($('#face-color').val()).move(Math.min(crease.endpoints[0].x, crease.endpoints[1].x) * scale, (grid.h - crease.endpoints[0].y - 1) * scale);
-          }
-          if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x, crease.endpoints[0].y - 1), grid.point(crease.endpoints[1].x, crease.endpoints[1].y - 1), 'M90'))) {
-            // Color the pixel below
-            draw.rect(scale / 2, scale).fill($('#face-color').val()).move(Math.min(crease.endpoints[0].x, crease.endpoints[1].x) * scale, (grid.h - crease.endpoints[0].y) * scale);
+          // Check bounds
+          if (crease.endpoints[0].y !== 0 && crease.endpoints[0].y !== grid.h) {
+            // If this is a left-to-right stroke, check above and below
+            if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x, crease.endpoints[0].y + 1), grid.point(crease.endpoints[1].x, crease.endpoints[1].y + 1), 'M90'))) {
+              // Color the pixel above
+              draw.rect(scale / 2, scale).fill($('#face-color').val()).move(Math.min(crease.endpoints[0].x, crease.endpoints[1].x) * scale, (grid.h - crease.endpoints[0].y - 1) * scale);
+            }
+            if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x, crease.endpoints[0].y - 1), grid.point(crease.endpoints[1].x, crease.endpoints[1].y - 1), 'M90'))) {
+              // Color the pixel below
+              draw.rect(scale / 2, scale).fill($('#face-color').val()).move(Math.min(crease.endpoints[0].x, crease.endpoints[1].x) * scale, (grid.h - crease.endpoints[0].y) * scale);
+            }
           }
         } else {
-          // If this is an up-to-down stroke, check left and right
-          if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x - 1, crease.endpoints[0].y), grid.point(crease.endpoints[1].x - 1, crease.endpoints[1].y), 'M90'))) {
-            // Color the pixel to the left
-            draw.rect(scale, scale / 2).fill($('#face-color').val()).move((crease.endpoints[0].x - 1) * scale, (grid.h - Math.max(crease.endpoints[0].y, crease.endpoints[1].y)) * scale);
-          }
-          if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x + 1, crease.endpoints[0].y), grid.point(crease.endpoints[1].x + 1, crease.endpoints[1].y), 'M90'))) {
-            // Color the pixel below
-            draw.rect(scale, scale / 2).fill($('#face-color').val()).move(crease.endpoints[0].x * scale, (grid.h - Math.max(crease.endpoints[0].y, crease.endpoints[1].y)) * scale);
+          // Check bounds
+          if (crease.endpoints[0].x !== 0 && crease.endpoints[0].x !== grid.w) {
+            // If this is an up-to-down stroke, check left and right
+            if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x - 1, crease.endpoints[0].y), grid.point(crease.endpoints[1].x - 1, crease.endpoints[1].y), 'M90'))) {
+              // Color the pixel to the left
+              draw.rect(scale, scale / 2).fill($('#face-color').val()).move((crease.endpoints[0].x - 1) * scale, (grid.h - Math.max(crease.endpoints[0].y, crease.endpoints[1].y)) * scale);
+            }
+            if (grid.creaseExists(new Crease(grid.point(crease.endpoints[0].x + 1, crease.endpoints[0].y), grid.point(crease.endpoints[1].x + 1, crease.endpoints[1].y), 'M90'))) {
+              // Color the pixel below
+              draw.rect(scale, scale / 2).fill($('#face-color').val()).move(crease.endpoints[0].x * scale, (grid.h - Math.max(crease.endpoints[0].y, crease.endpoints[1].y)) * scale);
+            }
           }
         }
       }
