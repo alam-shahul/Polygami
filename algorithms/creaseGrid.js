@@ -833,7 +833,6 @@ function tipToTipChooseCrease(grid, x, y, xInc, yInc) {
   var countVAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "V");
 
   if(cornerFoldCount === 2 && (grid.creaseExists(new Crease(new Point(x,y), new Point(x - xInc, y - yInc), "M90")))) {
-    console.log("Why");
     return -1;
   }
   else if(countM90 === 1 && countV90 === 1) {
