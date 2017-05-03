@@ -5,7 +5,7 @@ const VIEWER_SIZE = 600;
 
 var draw;
 var colorSchemeExtended = true;
-var inputMode3D = true;
+var inputMode = '3d';
 
 $(document).ready(function() {
   // Set up crease pattern viewer
@@ -45,14 +45,24 @@ $(document).ready(function() {
     updateOutput();
   });
 
+  $('#text-input').keyup(function(e) {
+    // Ignore the arrow keys
+    if (e.keyCode >= 37 && e.keyCode <= 40) {
+      return;
+    }
+    writeTextToGrid($('#text-input').val());
+    updateOutput();
+  });
+
   $('#input-mode-2d').click(function() {
     if (!($(this).hasClass('active'))) {
-      inputMode3D = false;
+      inputMode = '2d';
       $('.input-mode-picker').removeClass('active');
       $(this).addClass('active');
       $('#grid').show();
       $('.controls-2d').show();
       $('.controls-3d').hide();
+      $('.controls-text').hide();
       $('#input-3d').empty();
       $('#input-3d').hide();
       $('#input-title').text('Pixel Input');
@@ -62,16 +72,35 @@ $(document).ready(function() {
 
   $('#input-mode-3d').click(function() {
     if (!($(this).hasClass('active'))) {
-      inputMode3D = true;
+      inputMode = '3d';
       $('.input-mode-picker').removeClass('active');
       $(this).addClass('active');
       $('#grid').hide();
       $('#input-3d').show();
       $('.controls-2d').hide();
       $('.controls-3d').show();
+      $('.controls-text').hide();
       init();
       render();
       $('#input-title').text('Voxel Input');
+      updateOutput();
+    }
+  });
+
+  $('#input-mode-text').click(function() {
+    if (!($(this).hasClass('active'))) {
+      inputMode = 'text';
+      $('.input-mode-picker').removeClass('active');
+      $(this).addClass('active');
+      $('#grid').show();
+      $('#input-3d').empty();
+      $('#input-3d').hide();
+      $('.controls-2d').hide();
+      $('.controls-3d').hide();
+      $('.controls-text').show();
+      $('#text-input').focus();
+      $('#input-title').text('Text Input');
+      writeTextToGrid($('#text-input').val());
       updateOutput();
     }
   });
@@ -118,6 +147,42 @@ function setupGrid() {
   });
 };
 
+function writeTextToGrid(text) {
+  // Normalize text
+  text = text.toUpperCase();
+
+  var i, j, k, newWidth = 1, char, grid = [];
+
+  // Adjust grid size to fit the text, plus a border of 1
+  for (i = 0; i < text.length; i++) {
+    char = text[i];
+    if (font.hasOwnProperty(char)) {
+      newWidth += font[char].width + 1; // Include new char plus a space
+    }
+  }
+  width = newWidth;
+  height = 7; // All chars in our font are height 5
+  $('#width').val(width);
+  $('#height').val(height);
+  setupGrid();
+
+  // Update grid to show the text
+  var col = 1;
+  for (i = 0; i < text.length; i++) {
+    char = text[i];
+    if (font.hasOwnProperty(char)) {
+      for (j = 0; j < font[char].pixels.length; j++) {
+        for (k = 0; k < font[char].pixels[j].length; k++) {
+          if (font[char].pixels[j][k] === 1) {
+            $('#' + (col + k) + '-' + (height - j - 2)).addClass('filled');
+          }
+        }
+      }
+      col += font[char].width + 1;
+    }
+  }
+};
+
 // Update the crease pattern and 3D viewer
 function updateOutput() {
   updateViewer(creaseGrid(computeCorners(parseGrid())));
@@ -126,7 +191,7 @@ function updateOutput() {
 // Parses the pixel input into a 2D array or the 3D input into a 3D array
 function parseGrid() {
   var grid = [];
-  if (inputMode3D) {
+  if (inputMode === '3d') {
     // Handle empty grid
     if (!voxels.length) {
       return [[0]];
