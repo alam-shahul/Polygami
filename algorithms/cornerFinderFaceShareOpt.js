@@ -247,8 +247,8 @@ function computeFaceShare(pixelMatrix) {
             }
         }
 
-        console.log(maxArea);
-        console.log(largestTop, largestRight, largestBottom, largestLeft);
+        // console.log(maxArea);
+        // console.log(largestTop, largestRight, largestBottom, largestLeft);
         result[largestTop][largestRight].push('TopRight');
         // topRightList.push();
         // TODO: Figure out WTF is going on
