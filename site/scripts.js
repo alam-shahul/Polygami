@@ -233,22 +233,42 @@ function parseGrid() {
     //   }
     // }
 
-    // TODO: This currently returns just the slice of the input at z = 0,
-    // make corner computation accept 3D inputs (use commented out section above)
+    // // TODO: This currently returns just the slice of the input at z = 0,
+    // // make corner computation accept 3D inputs (use commented out section above)
+    // for (var x = 0; x <= Math.max(...voxX) + 1; x++) {
+    //   grid.push([]);
+    //   for (var y = 0; y <= Math.max(...voxY) + 1; y++) {
+    //     inGrid = false;
+    //     for (i = 0; i < voxels.length; i++) {
+    //       if (x === voxX[i] && y === voxY[i] && 0 === voxZ[i]) {
+    //         inGrid = true;
+    //       }
+    //     }
+    //     if (inGrid) {
+    //       grid[x].push(1);
+    //     } else {
+    //       grid[x].push(0);
+    //     }
+    //   }
+    // }
+
+    // TODO: This currently returns a projection of the 3D input onto a 2D plane,
+    // where each (x, y) point has its max z height.
+    // -1 if no voxel exists in this (x, y) column.
+    var maxZ;
     for (var x = 0; x <= Math.max(...voxX) + 1; x++) {
       grid.push([]);
       for (var y = 0; y <= Math.max(...voxY) + 1; y++) {
-        inGrid = false;
+        maxZ = -1;
         for (i = 0; i < voxels.length; i++) {
-          if (x === voxX[i] && y === voxY[i] && 0 === voxZ[i]) {
-            inGrid = true;
+          if (x === voxX[i] && y === voxY[i]) {
+            if (voxZ[i] > maxZ) {
+              maxZ = voxZ[i];
+            }
           }
         }
-        if (inGrid) {
-          grid[x].push(1);
-        } else {
-          grid[x].push(0);
-        }
+        // We push maxZ + 1 to count the number of voxels instead of inserting the voxel's z-value
+        grid[x].push(maxZ + 1);
       }
     }
   } else {
