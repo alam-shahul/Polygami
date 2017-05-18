@@ -7,10 +7,15 @@ class Grid {
     this.w = w;
     this.h = h;
 
-    // Instantiate an empty array that will hold the Corners that will be placed in the grid, keyed by tip
+    // Instantiate an empty object that will hold the Corners that will be
+    // placed in the grid
+    // Corners are keyed by stringified coordinates x,y of the Corner's tip
     this.corners = {};
 
-    // Instantiate an empty array that will hold the locations of the faces that will be extruded from the grid
+    // Instantiate an empty object that will hold the locations of the faces
+    // that will be extruded from the grid
+    // Faces are keyed by stringified coordinates x,y of the face's bottom-left
+    // corner
     this.extruded = {};
 
     // Instantiate an object holding all the Points in the Grid
@@ -92,7 +97,7 @@ class Grid {
       for(var j = 0; j < this.creases[Point.toString(p2.x, p2.y)].length; j++) {
         if((this.creases[Point.toString(p2.x, p2.y)][j]).equals(crease)) {
           this.creases[Point.toString(p2.x, p2.y)].splice(j, 1);
-test = this.creases[Point.toString(p2.x, p2.y)];
+          test = this.creases[Point.toString(p2.x, p2.y)];
         }
       }
     }
