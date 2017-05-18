@@ -5,10 +5,11 @@ class Corner {
     // priority defines the order in which Corners should be expanded
     this.priority = priority;
 
-    // tip is the direction of a corner, indicated by the point which is at the top of the corner
+    // tip is the Point between the two equal length sides of the Corner
     this.tip = tipPoint;
 
-    // direction is one of the directons that denotes the direction of the corner
+    // direction denotes the direction of the Corner with the location of the
+    // tip relative to the rest of the Corner
     this.direction = direction;
   }
 }
