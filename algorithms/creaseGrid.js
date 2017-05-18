@@ -793,8 +793,34 @@ function sidesOfCornersChooseCrease(grid, x, y, xInc, yInc) {
   var countMAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "M");
   var countVAhead = countCreaseByColor(grid, new Point(x + xInc, y + yInc), "V");
 
-  if(countM90 === 1 && countV90 === 1 && cornerFoldCount === 2) {
-    return -1;
+  if(countM90 === 1 && countV90 === 1 && (cornerFoldCount === 2 || cornerFoldCount === 4)) {
+    if(!("undefined" === typeof grid.corners[Point.toString(x + 1, y)])) {
+     if((grid.corners[Point.toString(x + 1, y)].priority ===  corner.priority)) {
+        return -1;
+      }
+    }
+    else if(!("undefined" === typeof grid.corners[Point.toString(x - 1, y)])) {
+      if((grid.corners[Point.toString(x - 1, y)].priority ===  corner.priority)) {
+        return -1;
+      }
+    }
+    else if(!("undefined" === typeof grid.corners[Point.toString(x, y + 1)])) {
+      if((grid.corners[Point.toString(x, y + 1)].priority ===  corner.priority)) {
+        return -1;
+      }
+    }
+    else if(!("undefined" === typeof grid.corners[Point.toString(x, y - 1)])) {
+      if((grid.corners[Point.toString(x, y - 1)].priority ===  corner.priority)) {
+        return -1;
+      }
+    }
+    else { 
+      console.log("What the heck!");
+      x += xInc;
+      y += yInc;
+  
+      return [x, y];
+    }
   }
   else if(countM90 === 1 && countV90 === 1 && (countCreaseByColor(grid, new Point(x + xInc, y + yInc), "C") === 2) || (countCreaseByColor(grid, new Point(x + xInc, y + yInc), "C") === 4)) {
     return -1;

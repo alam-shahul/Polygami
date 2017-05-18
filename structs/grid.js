@@ -7,7 +7,7 @@ class Grid {
     this.w = w;
     this.h = h;
 
-    // Instantiate an empty array that will hold the Corners that will be placed in the grid
+    // Instantiate an empty array that will hold the Corners that will be placed in the grid, keyed by tip
     this.corners = {};
 
     // Instantiate an empty array that will hold the locations of the faces that will be extruded from the grid
