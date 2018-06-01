@@ -9,7 +9,8 @@ class Grid {
 
     // Instantiate an empty object that will hold the Corners that will be
     // placed in the grid
-    // Corners are keyed by stringified coordinates x,y of the Corner's tip
+    // Corners are keyed by stringified coordinates x,y of the face's bottom-left
+    // point
     this.corners = {};
 
     // Instantiate an empty object that will hold the locations of the faces
