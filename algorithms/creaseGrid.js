@@ -4,7 +4,7 @@ function creaseGrid(grid) {
     return grid;
   }
   
-  //
+  // These variables are used throughout
   var corner;
   var currentX;
   var currentY;
@@ -60,7 +60,7 @@ function creaseGrid(grid) {
     // Go through corners in priority order
     for(var currPriority = Object.keys(grid.corners).length/2; currPriority >0; currPriority --) {
       // Make dictionary of Corners with priority = currPriority
-      var currCorners = {}
+      var currCorners = {};
       for(var j in grid.corners) {
         if(grid.corners[j].priority === currPriority) {
           matchingCorner = grid.corners[j];
@@ -440,7 +440,7 @@ function creaseGrid(grid) {
 
   draw();
   // Note: delete90DegreeFolds doesn't work, which is a major issue.
-  //delete90DegreeFolds();
+  delete90DegreeFolds();
   //draw();
 
   console.log(grid.corners);
@@ -453,10 +453,12 @@ function countCreaseByColor(grid, point, color) {
   
   var creases = grid.creases[Point.toString(point.x, point.y)];
 
-  if(point.x <= grid.w && point.y <= grid.h) {
-    for(var i = 0; i < creases.length; i++) {
-      if(creases[i].color === color) {
-        count += 1;
+  if(!("undefined" === typeof creases)) {
+    if(point.x <= grid.w && point.y <= grid.h) {
+      for(var i = 0; i < creases.length; i++) {
+        if(creases[i].color === color) {
+          count += 1;
+        }
       }
     }
   }
